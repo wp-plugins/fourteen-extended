@@ -3,7 +3,7 @@ Contributors: ZGani - AKA Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts
 Requires at least: 3.8
 Tested up to: 3.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
@@ -14,6 +14,9 @@ Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen 
 * Center align the entire site
 * Set Blog feed to full width
 * Set single posts to full width
+* Set content off the featured image i.e. move content below the post featured image.
+* Adjust the content max-width up to 874px for that uniform look - default is 474px.
+* Float the Primary menu to the left
 * And more to come...
 
 Fourteen Extended will help you center align your entire site, set your blog feed to the glorious Twenty Fourteen full width look plus an option to set the single posts to full width too! Please report any issues on the support forums.
@@ -24,7 +27,6 @@ Fourteen Extended will help you center align your entire site, set your blog fee
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Go to the Theme Customizer (Appearance -> Customize) and adjust the check the required boxes in the newly added Sitewide General Options tab
 
-
 == Frequently Asked Questions ==
 = I tried using Fourteen Extended with a theme other than Twenty Fourteen and ... =
 Don't. There is a known bug where the plugin may be applied to other themes when live previewing them, but Fourteen Extended will prevent itself from functioning when the current theme is not Twenty Fourteen or a child.
@@ -32,10 +34,12 @@ Don't. There is a known bug where the plugin may be applied to other themes when
 = Child Themes =
 Fourteen Extended is a plugin, not a child theme, because it is primarily programmatic (ie, it would only consist of a functions.php file), and for flexibility.
 
-You can use Fourteen Extended with both Twenty Fourteen and child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set your colors. Child theme compatibility depends on the extent of changes made by the child theme.
-
+You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set your colors. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+= 1.0.2 =
+* NEW: Added option to move Primary navigation to the left close to the Site title. 
+
 = 1.0.1 =
 * Fixed bug on sidebar not showing when box not checked.
 * NEW: Added option to move content off the featured image and below it
@@ -43,3 +47,7 @@ You can use Fourteen Extended with both Twenty Fourteen and child themes. Be awa
 
 = 1.0.0 =
 * Initial release
+
+== TODO List ==
+1 - Add FitVids script for better video embed handling across multiple media devices.
+2 - Any other suggestions and requests.

@@ -56,6 +56,23 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 1,
         )
     );
+	
+	// Primary position switch - float it to the left.
+	$wp_customize->add_setting( 'fourteenxt_primary_menu_float', array(
+		'default' => 'right',
+	) );
+	
+	$wp_customize->add_control( 'fourteenxt_primary_menu_float', array(
+    'label'   => __( 'Float Primary Menu to the left?', 'fourteenxt' ),
+    'section' => 'fourteenxt_general_options',
+	'priority' => 2,
+    'type'    => 'radio',
+        'choices' => array(
+            'right' => __( 'Default - Right', 'fourteenxt' ),
+            'left'  => __( 'Float Left', 'fourteenxt' ),
+        ),
+    ));
+	
 	// Set Blog feed to full width i.e. hide the content sidebar.
 	$wp_customize->add_setting(
         'fourteenxt_fullwidth_blog_feed'
@@ -67,7 +84,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Check to hide the sidebar on the blog feed', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
-		'priority' => 2,
+		'priority' => 3,
         )
     );
 	
@@ -82,7 +99,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Check to show full width single post', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
-		'priority' => 3,
+		'priority' => 4,
         )
     );
 	
@@ -95,9 +112,9 @@ function fourteenxt_customize_register( $wp_customize ) {
 	$wp_customize->add_control(
     'fourteenxt_content_off_featured_image',
     array(
-        'label' => __('Enter 1 or more for padding to move content off featured image - default is -48','fourteenxt'),
+        'label' => __('Enter 1 or more for padding to move content off featured image (numbers only!) - default is -48','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 4,
+		'priority' => 5,
         'type' => 'text',
     ));
 	
@@ -110,12 +127,11 @@ function fourteenxt_customize_register( $wp_customize ) {
 	$wp_customize->add_control(
     'fourteenxt_content_width_adjustment',
     array(
-        'label' => __('Set Content max-width - maximum recommended is 874','fourteenxt'),
+        'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 5,
+		'priority' => 6,
         'type' => 'text',
     ));
-
 }
 add_action( 'customize_register', 'fourteenxt_customize_register' );
 
@@ -148,8 +164,19 @@ endif;
 add_action( 'wp_head', 'fourteenxt_extra_scripts' );
 
 function fourteenxt_general_css(){
-if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
 
+if ( get_theme_mod( 'fourteenxt_primary_menu_float' ) ) {
+    $primary_menu_float = get_theme_mod( 'fourteenxt_primary_menu_float' );
+	// Apply custom settings to appropriate element ?>
+    <style>
+	    .primary-navigation {
+		    float: <?php echo $primary_menu_float; ?>;
+			margin-left: 20px;
+	    }
+	</style>
+<?php }
+
+if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
  // Apply site layout settings to appropriate element ?>
     <style>
 	    .site {
