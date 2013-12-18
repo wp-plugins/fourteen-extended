@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteenth-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.0.2
+Version:     1.0.3
 License:     GPL
 */
 
@@ -21,11 +21,11 @@ if ( get_template() != 'twentyfourteen' ) {
  *
  * @return void
  */
-function fourteenxt_colors_load_textdomain() {
+function fourteenxt_extended_load_textdomain() {
 	// This will load the WordPress-downloaded language pack if it exists, as languages are not bundled with the plugin.
 	load_plugin_textdomain( 'fourteenxt' );
 }
-add_action( 'plugins_loaded', 'fourteenxt_colors_load_textdomain' );
+add_action( 'plugins_loaded', 'fourteenxt_extended_load_textdomain' );
 
 
 /**
@@ -135,10 +135,39 @@ function fourteenxt_customize_register( $wp_customize ) {
 }
 add_action( 'customize_register', 'fourteenxt_customize_register' );
 
+/**
+ * Extend the default WordPress body classes and run them according to our settings.
+ *
+ * Adds body classes Index views Full-width content layout.
+ * Single views Full-width content layout.
+ * Fully centred site
+ *
+ * @since Fourteen Extended 1.0.0
+ *
+ * @param array $classes A list of existing body class values.
+ * @return array The filtered body class list.
+ */
+function fourteenxt_body_classes( $classes ) {
+
+	if (get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
+    if (is_home() ) : 
+        $classes[] = 'full-width';
+	endif;
+    }
+	
+	if (get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
+	if (is_singular() && !is_page() ) : 
+        $classes[] = 'full-width';
+   	endif;
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'fourteenxt_body_classes' );
+
 // Run our custom output from the settings
 function fourteenxt_extra_scripts() {
-if ( is_home() ) : 
 if ( get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
+if ( is_home() ) : 
     ?>
 	    <style>
 	        .content-sidebar { display: none;}
@@ -146,11 +175,11 @@ if ( get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
 	            width: 100%;
             }
 	    </style>
-<?php }
-endif;
+<?php 
+endif; }
 
-if ( is_singular() ) : 
 if ( get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
+if ( is_singular() && !is_page()) : 
     ?>
 	    <style>
 	        .content-sidebar { display: none;}
@@ -158,8 +187,8 @@ if ( get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
 	            width: 100%;
             }
 	    </style>
-<?php }
-endif;
+<?php 
+endif; }
 }
 add_action( 'wp_head', 'fourteenxt_extra_scripts' );
 
@@ -225,30 +254,5 @@ if ( get_theme_mod( 'fourteenxt_content_width_adjustment' ) ) {
 }
 add_action( 'wp_head', 'fourteenxt_general_css' );
 
-/**
- * Extend the default WordPress body classes and run them according to our settings.
- *
- * Adds body classes Index views Full-width content layout.
- * Single views Full-width content layout.
- * Fully centred site
- *
- * @since Fourteen Extended 1.0.0
- *
- * @param array $classes A list of existing body class values.
- * @return array The filtered body class list.
- */
-function fourteenxt_body_classes( $classes ) {
 
-	if (is_home() ) : 
-    if (get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
-	$classes[] = 'full-width';
-	} endif;
-	
-	if (is_singular() ) : 
-    if (get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
-    $classes[] = 'full-width';
-    } endif;
 
-	return $classes;
-}
-add_filter( 'body_class', 'fourteenxt_body_classes' );
