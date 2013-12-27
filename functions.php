@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteenth-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.0.3
+Version:     1.0.4
 License:     GPL
 */
 
@@ -132,6 +132,30 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 6,
         'type' => 'text',
     ));
+	
+	// Blog Feed Category Selector
+    $categories = get_categories();
+	$cats = array();
+	$i = 0;
+	foreach($categories as $category){
+		if($i==0){
+			$default = $category->slug;
+			$i++;
+		}
+		$cats[$category->slug] = $category->name;
+	}
+ 
+	$wp_customize->add_setting('fourteenxt_feed_cat', array(
+		'default'  => '',
+	));
+	$wp_customize->add_control( 'fourteenxt_feed_cat', array(
+		'settings' => 'fourteenxt_feed_cat',
+		'label'   => __('Select Blog Feed Category:', 'fourteenxt'),
+		'section'  => 'fourteenxt_general_options',
+		'priority' => 7,
+		'type'    => 'select',
+		'choices' => $cats,
+	));
 }
 add_action( 'customize_register', 'fourteenxt_customize_register' );
 
@@ -251,8 +275,18 @@ if ( get_theme_mod( 'fourteenxt_content_width_adjustment' ) ) {
         }
 	</style>
 <?php }
+
 }
 add_action( 'wp_head', 'fourteenxt_general_css' );
 
+function fourteenxt_blog_feed_cat( $query ) {
+    if ( is_admin() || ! $query->is_main_query() )
+        return;
 
-
+    if ( is_home() ) {
+        // Display posts in ascending order on the blog feed/archive
+        $query->set( 'category_name', get_theme_mod( 'fourteenxt_feed_cat' ));
+        return;
+    }
+}
+add_action( 'pre_get_posts', 'fourteenxt_blog_feed_cat', 1 );
