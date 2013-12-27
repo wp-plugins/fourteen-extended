@@ -62,7 +62,7 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
-=1.0.4 =
+= 1.0.4 =
 * NEW: Added option to select category for the Blog Feed
 
 = 1.0.3 =
