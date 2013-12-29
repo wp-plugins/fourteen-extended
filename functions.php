@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteenth-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.0.4
+Version:     1.0.5
 License:     GPL
 */
 
@@ -135,7 +135,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	
 	// Blog Feed Category Selector
     $categories = get_categories();
-	$cats = array();
+	$cats = array( 'All Categories' );
 	$i = 0;
 	foreach($categories as $category){
 		if($i==0){
