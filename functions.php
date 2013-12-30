@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteenth-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.0.5
+Version:     1.0.6
 License:     GPL
 */
 
@@ -106,7 +106,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	$wp_customize->add_setting(
     'fourteenxt_content_off_featured_image',
     array(
-        'default' => '-48',
+        'default' => '',
     ));
 	
 	$wp_customize->add_control(
@@ -256,9 +256,21 @@ if ( get_theme_mod( 'fourteenxt_content_off_featured_image' ) ) {
     $conten_padding_top = esc_html( get_theme_mod( 'fourteenxt_content_off_featured_image' ));
 	// Apply custom settings to appropriate element ?>
     <style>
-	    .site-content .has-post-thumbnail .entry-header {
-		    margin-top: <?php echo $conten_padding_top; ?>px !important;
-	    }
+	    @media screen and (min-width: 594px) {
+		    .site-content .has-post-thumbnail .entry-header {
+		        margin-top: <?php echo $conten_padding_top; ?>px !important;
+	        }
+		}
+		@media screen and (min-width: 846px) {
+		    .site-content .has-post-thumbnail .entry-header {
+		        margin-top: <?php echo $conten_padding_top; ?>px !important;
+	        }
+		}
+		@media screen and (min-width: 1040px) {
+            .site-content .has-post-thumbnail .entry-header {
+		        margin-top: <?php echo $conten_padding_top; ?>px !important;
+	        }
+        }
 	</style>
 <?php }
 

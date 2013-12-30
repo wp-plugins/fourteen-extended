@@ -3,7 +3,7 @@ Contributors: ZGani - AKA Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts
 Requires at least: 3.6
 Tested up to: 3.8
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
@@ -62,6 +62,9 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+
+= 1.0.6 =
+* Fixed bug that was causing post header/title to be out of place on Smartphones.
 
 = 1.0.5 =
 * Added options to revert to all categories with "All Categories" option.
