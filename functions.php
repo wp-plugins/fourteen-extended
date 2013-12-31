@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Fourteen Extended
-Plugin URI:  http://wordpress.org/plugins/fourteenth-extended
+Plugin URI:  http://wordpress.org/plugins/fourteen-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.0.6
+Version:     1.0.7
 License:     GPL
 */
 
