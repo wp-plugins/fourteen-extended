@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteen-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.0.8
+Version:     1.0.9
 License:     GPL
 */
 
@@ -27,137 +27,8 @@ function fourteenxt_extended_load_textdomain() {
 }
 add_action( 'plugins_loaded', 'fourteenxt_extended_load_textdomain' );
 
-
-/**
- * Add and modify the customizer settings and controls.
- *
- * @since Fourteen Extended 1.0.0
- *
- */
-function fourteenxt_customize_register( $wp_customize ) {
-
-    $wp_customize->add_section( 'fourteenxt_general_options' , array(
-       'title'      => __('TwentyFourteen General Options','fourteenxt'),
-	   'description' => sprintf( __( 'Use the following settings to set general theme options. Current options are: Center the site, Set Blog feed to full width, Set single post to full width, set content max-width and move content to below the featured image with more to come!', 'fourteenxt' )),
-       'priority'   => 30,
-    ) );
-	
-	// Lets center the site shall we
-    $wp_customize->add_setting(
-        'fourteenxt_center_site'
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_center_site',
-    array(
-        'type'     => 'checkbox',
-        'label'    => __('Center Align Site Layout?', 'fourteenxt'),
-        'section'  => 'fourteenxt_general_options',
-		'priority' => 1,
-        )
-    );
-	
-	// Primary position switch - float it to the left.
-	$wp_customize->add_setting( 'fourteenxt_primary_menu_float', array(
-		'default' => 'right',
-	) );
-	
-	$wp_customize->add_control( 'fourteenxt_primary_menu_float', array(
-    'label'   => __( 'Float Primary Menu to the left?', 'fourteenxt' ),
-    'section' => 'fourteenxt_general_options',
-	'priority' => 2,
-    'type'    => 'radio',
-        'choices' => array(
-            'right' => __( 'Default - Right', 'fourteenxt' ),
-            'left'  => __( 'Float Left', 'fourteenxt' ),
-        ),
-    ));
-	
-	// Set Blog feed to full width i.e. hide the content sidebar.
-	$wp_customize->add_setting(
-        'fourteenxt_fullwidth_blog_feed'
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_fullwidth_blog_feed',
-    array(
-        'type'     => 'checkbox',
-        'label'    => __('Check to hide the sidebar on the blog feed', 'fourteenxt'),
-        'section'  => 'fourteenxt_general_options',
-		'priority' => 3,
-        )
-    );
-	
-	// Set Blog feed to full width i.e. hide the content sidebar.
-	$wp_customize->add_setting(
-        'fourteenxt_fullwidth_single_post'
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_fullwidth_single_post',
-    array(
-        'type'     => 'checkbox',
-        'label'    => __('Check to show full width single post', 'fourteenxt'),
-        'section'  => 'fourteenxt_general_options',
-		'priority' => 4,
-        )
-    );
-	
-	$wp_customize->add_setting(
-    'fourteenxt_content_off_featured_image',
-    array(
-        'default' => '',
-    ));
-	
-	$wp_customize->add_control(
-    'fourteenxt_content_off_featured_image',
-    array(
-        'label' => __('Enter 1 or more for padding to move content off featured image (numbers only!) - default is -48','fourteenxt'),
-        'section' => 'fourteenxt_general_options',
-		'priority' => 5,
-        'type' => 'text',
-    ));
-	
-	$wp_customize->add_setting(
-    'fourteenxt_content_width_adjustment',
-    array(
-        'default' => '474',
-    ));
-	
-	$wp_customize->add_control(
-    'fourteenxt_content_width_adjustment',
-    array(
-        'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474','fourteenxt'),
-        'section' => 'fourteenxt_general_options',
-		'priority' => 6,
-        'type' => 'text',
-    ));
-	
-	// Blog Feed Category Selector
-    $categories = get_categories();
-	$cats = array( 'All Categories' );
-	$i = 0;
-	foreach($categories as $category){
-		if($i==0){
-			$default = $category->slug;
-			$i++;
-		}
-		$cats[$category->slug] = $category->name;
-	}
- 
-	$wp_customize->add_setting('fourteenxt_feed_cat', array(
-		'default'  => '',
-	));
-	$wp_customize->add_control( 'fourteenxt_feed_cat', array(
-		'settings' => 'fourteenxt_feed_cat',
-		'label'   => __('Select Blog Feed Category:', 'fourteenxt'),
-		'section'  => 'fourteenxt_general_options',
-		'priority' => 7,
-		'type'    => 'select',
-		'choices' => $cats,
-	));
-}
-add_action( 'customize_register', 'fourteenxt_customize_register' );
+// Customizer Moved to inc folder - since v1.0.9
+require_once('inc/fourteenxt-customizer.php'); // Include Extended Customizer
 
 /**
  * Extend the default WordPress body classes and run them according to our settings.
@@ -172,7 +43,8 @@ add_action( 'customize_register', 'fourteenxt_customize_register' );
  * @return array The filtered body class list.
  */
 function fourteenxt_body_classes( $classes ) {
-
+global $content_width;
+	
 	if (get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
     if (is_home() ) : 
         $classes[] = 'full-width';
@@ -188,111 +60,6 @@ function fourteenxt_body_classes( $classes ) {
 }
 add_filter( 'body_class', 'fourteenxt_body_classes' );
 
-// Run our custom output from the settings
-function fourteenxt_extra_scripts() {
-if ( get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
-if ( is_home() ) : 
-    ?>
-	    <style>
-	        .content-sidebar { display: none;}
-			.full-width .post-thumbnail img {
-	            width: 100%;
-            }
-	    </style>
-<?php 
-endif; }
-
-if ( get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
-if ( is_singular() && !is_page()) : 
-    ?>
-	    <style>
-	        .content-sidebar { display: none;}
-			.full-width .post-thumbnail img {
-	            width: 100%;
-            }
-	    </style>
-<?php 
-endif; }
-}
-add_action( 'wp_head', 'fourteenxt_extra_scripts' );
-
-function fourteenxt_general_css(){
-
-if ( get_theme_mod( 'fourteenxt_primary_menu_float' ) ) {
-    $primary_menu_float = get_theme_mod( 'fourteenxt_primary_menu_float' );
-	// Apply custom settings to appropriate element ?>
-    <style>
-	    @media screen and (min-width: 783px) {
-		    .primary-navigation {
-		        float: <?php echo $primary_menu_float; ?>;
-			    margin-left: 20px;
-	        }
-		}
-	</style>
-<?php }
-
-if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
- // Apply site layout settings to appropriate element ?>
-    <style>
-	    .site {
-            margin: 0 auto;
-        }
-		@media screen and (min-width: 1110px) {
-	        .archive-header,
-	        .comments-area,
-	        .image-navigation,
-	        .page-header,	        
-			.page-content,
-	        .post-navigation,
-	        .site-content .entry-header,
-	        .site-content .entry-content,
-	        .site-content .entry-summary,
-	        .site-content footer.entry-meta {
-		        padding-left: 55px;
-	        }
-        }
-	</style>
-<?php }
- 
-if ( get_theme_mod( 'fourteenxt_content_off_featured_image' ) ) {
-    $conten_padding_top = esc_html( get_theme_mod( 'fourteenxt_content_off_featured_image' ));
-	// Apply custom settings to appropriate element ?>
-    <style>
-	    @media screen and (min-width: 594px) {
-		    .site-content .has-post-thumbnail .entry-header {
-		        margin-top: <?php echo $conten_padding_top; ?>px !important;
-	        }
-		}
-		@media screen and (min-width: 846px) {
-		    .site-content .has-post-thumbnail .entry-header {
-		        margin-top: <?php echo $conten_padding_top; ?>px !important;
-	        }
-		}
-		@media screen and (min-width: 1040px) {
-            .site-content .has-post-thumbnail .entry-header {
-		        margin-top: <?php echo $conten_padding_top; ?>px !important;
-	        }
-        }
-	</style>
-<?php }
-
-if ( get_theme_mod( 'fourteenxt_content_width_adjustment' ) ) {
-    $conten_max_width = esc_html( get_theme_mod( 'fourteenxt_content_width_adjustment' ));
-	// Apply site custom settings to appropriate element ?>
-    <style>
-	    .site-content .entry-header,
-        .site-content .entry-content,
-        .site-content .entry-summary,
-        .site-content .entry-meta,
-        .page-content {
-	        max-width: <?php echo $conten_max_width; ?>px;
-        }
-	</style>
-<?php }
-
-}
-add_action( 'wp_head', 'fourteenxt_general_css' );
-
 function fourteenxt_blog_feed_cat( $query ) {
     if ( is_admin() || ! $query->is_main_query() )
         return;
@@ -304,3 +71,34 @@ function fourteenxt_blog_feed_cat( $query ) {
     }
 }
 add_action( 'pre_get_posts', 'fourteenxt_blog_feed_cat', 1 );
+
+/**
+ * Loads the fitvids plugin.
+ *
+ * @since Fourteen Extended 1.0.9
+ */
+
+// add FitVids to site
+if ( get_theme_mod( 'fourteenxt_fitvids_enable' ) != 0 ) {
+
+function fourteenxt_fitvids_scripts() {
+   	// add fitvids
+	wp_register_script( 'fourteenxt_fitvids',plugin_dir_url( __FILE__ ).'js/jquery.fitvids.js','extended-fitvids', array( 'jquery' ), true );
+    wp_enqueue_script( 'fourteenxt_fitvids' );
+	
+} // end fitvids_scripts
+add_action('wp_enqueue_scripts','fourteenxt_fitvids_scripts', 20);
+
+// selector script
+function fourteenxt_fitthem() { ?>
+   	<script type="text/javascript">
+   	jQuery(document).ready(function() {
+   		jQuery('<?php echo get_theme_mod('fourteenxt_fitvids_selector'); ?>').fitVids({ customSelector: '<?php echo stripslashes(get_theme_mod('fourteenxt_fitvids_custom_selector')); ?>'});
+   	});
+   	</script>
+<?php } // End selector script
+add_action( 'wp_footer', 'fourteenxt_fitthem', 210 );
+} // End FitVids enable
+
+// Styles Moved to inc folder - since v1.0.9
+require_once('inc/fourteenxt-styles.php'); // Include Extended Styles
