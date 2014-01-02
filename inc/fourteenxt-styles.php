@@ -64,44 +64,15 @@ if ( get_theme_mod( 'fourteenxt_content_off_featured_image' ) ) {
 add_action( 'wp_head', 'fourteenxt_general_css' );
 
 function fourteenxt_extra_scripts() {
-if ( get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
-if ( is_home() ) : 
-    ?>
-	    <style>
-	        .content-sidebar { display: none;}
-			.full-width .post-thumbnail img {
-	            width: 100%;
-            }
-	    </style>
-	<?php $conten_max_width = esc_html( get_theme_mod( 'fourteenxt_content_width_adjustment' ));
+if ( get_theme_mod( 'fourteenxt_content_width_adjustment' ) ) {
+    $conten_max_width = esc_html( get_theme_mod( 'fourteenxt_content_width_adjustment' ));
 	// Apply site custom settings to appropriate element ?>
     <style>
 	    .site-content .entry-header,
         .site-content .entry-content,
         .site-content .entry-summary,
-        .site-content .entry-meta {
-	        max-width: <?php echo $conten_max_width; ?>px;
-        }
-	</style>
-<?php 
-endif; }
-
-if ( get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
-if ( is_singular() && !is_page()) : 
-    ?>
-	<style>
-	    .content-sidebar { display: none;}
-	    .full-width .post-thumbnail img {
-	    width: 100%;
-        }
-	</style>
-	<?php $conten_max_width = esc_html( get_theme_mod( 'fourteenxt_content_width_adjustment' ));
-	// Apply site custom settings to appropriate element ?>
-    <style>
-	    .site-content .entry-header,
-        .site-content .entry-content,
-        .site-content .entry-summary,
-        .site-content .entry-meta {
+        .site-content .entry-meta,
+        .page-content {
 	        max-width: <?php echo $conten_max_width; ?>px;
         }
 		.comments-area {
@@ -111,7 +82,31 @@ if ( is_singular() && !is_page()) :
             max-width: <?php echo $conten_max_width; ?>px;
         }
 	</style>
+<?php }
+
+if ( get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
+if ( is_home() ) : 
+    ?>
+	    <style>
+	        .content-sidebar { display: none;}
+			.full-width .post-thumbnail img {
+	            width: 100%;
+            }
+	    </style>
 <?php 
 endif; }
+
+if ( get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
+if ( is_singular() && !is_page()) : 
+    ?>
+	<style>
+	    .content-sidebar { display: none;}
+	    .full-width .post-thumbnail img {
+	        width: 100%;
+        }
+	</style>
+<?php 
+endif; }
+
 }
 add_action( 'wp_head', 'fourteenxt_extra_scripts' );
