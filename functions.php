@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteen-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.0.7
+Version:     1.0.8
 License:     GPL
 */
 
@@ -222,10 +222,12 @@ if ( get_theme_mod( 'fourteenxt_primary_menu_float' ) ) {
     $primary_menu_float = get_theme_mod( 'fourteenxt_primary_menu_float' );
 	// Apply custom settings to appropriate element ?>
     <style>
-	    .primary-navigation {
-		    float: <?php echo $primary_menu_float; ?>;
-			margin-left: 20px;
-	    }
+	    @media screen and (min-width: 783px) {
+		    .primary-navigation {
+		        float: <?php echo $primary_menu_float; ?>;
+			    margin-left: 20px;
+	        }
+		}
 	</style>
 <?php }
 
