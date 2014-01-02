@@ -108,5 +108,29 @@ if ( is_singular() && !is_page()) :
 <?php 
 endif; }
 
+if ( get_theme_mod( 'fourteenxt_fullwidth_archives' ) != 0 ) {
+if ( is_archive() ) : 
+    ?>
+	<style>
+	    .content-sidebar { display: none;}
+	    .full-width .post-thumbnail img {
+	        width: 100%;
+        }
+	</style>
+<?php 
+endif; }
+
+if ( get_theme_mod( 'fourteenxt_fullwidth_searches' ) != 0 ) {
+if ( is_search() ) : 
+    ?>
+	<style>
+	    .content-sidebar { display: none;}
+	    .full-width .post-thumbnail img {
+	        width: 100%;
+        }
+	</style>
+<?php 
+endif; }
+
 }
 add_action( 'wp_head', 'fourteenxt_extra_scripts' );

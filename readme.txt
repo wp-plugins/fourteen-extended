@@ -1,9 +1,9 @@
 === Fourteen Extended ===
 Contributors: ZGani - AKA Zulfikar Nore
-Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts
+Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
 Tested up to: 3.8
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
@@ -18,23 +18,29 @@ Prefer the menu on the left?
 
 Want to move the content below the featured image?
 
-Increase the content width for full width blog feed/posts? 
+Increase the content width for full width blog feed/posts/archives/searches? 
 
 Then wait no more! Stop fumbling with child themes and code - all it takes is a few check boxes, make a couple of entries, save and you are done and dusted.
 
-Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen theme. It provides a TwentyFourteen Genera Option tab with options to:
+Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen theme. It provides TwentyFourteen General Option & FitVids tabs with options to:
 
 1. Center align the entire site.
 
 2. Set Blog feed to full width.
 
-3. Set single posts to full width.
+3. Set Single posts to full width.
 
-4. Set content off the featured image i.e. move content below the post featured image.
+4. Set Archives to full width.
 
-5. Adjust the content max-width up to 874px for that uniform look - default is 474px.
+5. Set Search results to full width.
 
-6. Float the Primary menu to the left.
+6. Set content off the featured image i.e. move content below the post featured image.
+
+7. Adjust the content max-width up to 874px for that uniform look - default is 474px.
+
+8. Float the Primary menu to the left.
+
+9. Include FitVids script for true responsive videos - Enable/Disable script plus set default and custom selectors.
 
 * And more to come...
 
@@ -62,6 +68,10 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+
+= 1.1.1 =
+* NEW: Added option to set Archive pages to Full Width (Affects the Archives, Categories and Tags pages).
+* NEW: Added option to set Search results page to Full Width.
 
 = 1.1.0 =
 * Reverted changes made to content width so that pages too can be true full width.

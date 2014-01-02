@@ -80,6 +80,36 @@ function fourteenxt_customize_register( $wp_customize ) {
         )
     );
 	
+	// Set Archives to full width i.e. hide the content sidebar.
+	$wp_customize->add_setting(
+        'fourteenxt_fullwidth_archives'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_fullwidth_archives',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Check to show full width for archives, categories and tags', 'fourteenxt'),
+        'section'  => 'fourteenxt_general_options',
+		'priority' => 5,
+        )
+    );
+	
+	// Set Searches to full width i.e. hide the content sidebar.
+	$wp_customize->add_setting(
+        'fourteenxt_fullwidth_searches'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_fullwidth_searches',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Check to show full width for Search results page', 'fourteenxt'),
+        'section'  => 'fourteenxt_general_options',
+		'priority' => 6,
+        )
+    );
+	
 	$wp_customize->add_setting(
     'fourteenxt_content_off_featured_image',
     array(
@@ -91,7 +121,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Enter 1 or more for padding to move content off featured image (numbers only!) - default is -48','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 5,
+		'priority' => 7,
         'type' => 'text',
     ));
 	
@@ -106,7 +136,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 6,
+		'priority' => 8,
         'type' => 'text',
     ));
 	
@@ -129,7 +159,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'settings' => 'fourteenxt_feed_cat',
 		'label'   => __('Select Blog Feed Category:', 'fourteenxt'),
 		'section'  => 'fourteenxt_general_options',
-		'priority' => 8,
+		'priority' => 9,
 		'type'    => 'select',
 		'choices' => $cats,
 	));
