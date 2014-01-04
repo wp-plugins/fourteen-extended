@@ -70,7 +70,7 @@ You can use Fourteen Extended with both the default Twenty Fourteen and its chil
 == Changelog ==
 
 = 1.1.2 =
-* NEW: Added option to switch home blog feed to shoe excerpts instead of full content.
+* NEW: Added option to switch home blog feed to show excerpts instead of full content.
 * Separated Content options from general options - new tab: TwentyFourteen Content Options added.
 
 = 1.1.1 =
