@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteen-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.1.1
+Version:     1.1.2
 License:     GPL
 */
 
@@ -84,6 +84,58 @@ function fourteenxt_blog_feed_cat( $query ) {
     }
 }
 add_action( 'pre_get_posts', 'fourteenxt_blog_feed_cat', 1 );
+ 
+/**
+ * Add filter to the_content.
+ *
+ * @since Fourteen Extended 1.1.2
+ */
+if ( get_theme_mod( 'fourteenxt_home_excerpts' ) != 0 ) {
+function fourteenxt_excerpts($content = false) {
+
+// If is the home page, an archive, or search results
+	if(is_home() ) :
+		global $post;
+		$content = $post->post_excerpt;
+
+	// If an excerpt is set in the Optional Excerpt box
+		if($content) :
+		$content = apply_filters('the_excerpt', $content);
+
+	// If no excerpt is set
+		else :
+			$content = $post->post_content;
+			if (get_theme_mod( 'fourteenxt_excerpt_length' )) :
+			$excerpt_length = get_theme_mod( 'fourteenxt_excerpt_length' );
+			else : 
+			$excerpt_length = 30;
+			endif;
+			$words = explode(' ', $content, $excerpt_length + 1);
+			$more = ( fourteenxt_read_more() );
+			if(count($words) > $excerpt_length) :
+				array_pop($words);
+				array_push($words, $more);
+				$content = implode(' ', $words);
+			endif;
+			$content = '<p>' . $content . '</p>';
+
+		endif;
+	endif;
+
+// Make sure to return the content
+	return $content;
+
+}
+add_filter('the_content', 'fourteenxt_excerpts');
+
+/**
+ * Returns a "Continue Reading" link for excerpts
+ */
+function fourteenxt_read_more() {
+    return '&hellip; <a href="' . get_permalink() . '">' . __('Continue Reading &#8250;&#8250;', 'fourteenxt') . '</a><!-- end of .read-more -->';
+}
+//End filter to the_content
+}
 
 /**
  * Loads the fitvids plugin.

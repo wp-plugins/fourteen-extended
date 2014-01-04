@@ -13,10 +13,16 @@ function fourteenxt_customize_register( $wp_customize ) {
        'priority'   => 30,
     ) );
 	
+	$wp_customize->add_section( 'fourteenxt_content_options' , array(
+       'title'      => __('TwentyFourteen Content Options','fourteenxt'),
+	   'description' => sprintf( __( 'Use the following settings to set content options. A screen refresh may be required to see some of the changes in the customizer!', 'fourteenxt' )),
+       'priority'   => 31,
+    ) );
+	
 	$wp_customize->add_section( 'fourteenxt_fitvids_options' , array(
        'title'      => __('TwentyFourteen FitVids Options','fourteenxt'),
 	   'description' => sprintf( __( 'Use the following settings to set fitvids script options. Options are: Enable script, Set selector (Default is .post) and set custom selector (optional) for other areas like .sidebar or a custom section!', 'fourteenxt' )),
-       'priority'   => 31,
+       'priority'   => 32,
     ) );
 	
 	// Lets center the site shall we
@@ -60,8 +66,8 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'type'     => 'checkbox',
         'label'    => __('Check to hide the sidebar on the blog feed', 'fourteenxt'),
-        'section'  => 'fourteenxt_general_options',
-		'priority' => 3,
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 1,
         )
     );
 	
@@ -75,8 +81,8 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'type'     => 'checkbox',
         'label'    => __('Check to show full width single post', 'fourteenxt'),
-        'section'  => 'fourteenxt_general_options',
-		'priority' => 4,
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 2,
         )
     );
 	
@@ -90,8 +96,8 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'type'     => 'checkbox',
         'label'    => __('Check to show full width for archives, categories and tags', 'fourteenxt'),
-        'section'  => 'fourteenxt_general_options',
-		'priority' => 5,
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 3,
         )
     );
 	
@@ -105,8 +111,8 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'type'     => 'checkbox',
         'label'    => __('Check to show full width for Search results page', 'fourteenxt'),
-        'section'  => 'fourteenxt_general_options',
-		'priority' => 6,
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 4,
         )
     );
 	
@@ -120,8 +126,8 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_content_off_featured_image',
     array(
         'label' => __('Enter 1 or more for padding to move content off featured image (numbers only!) - default is -48','fourteenxt'),
-        'section' => 'fourteenxt_general_options',
-		'priority' => 7,
+        'section' => 'fourteenxt_content_options',
+		'priority' => 5,
         'type' => 'text',
     ));
 	
@@ -135,8 +141,8 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_content_width_adjustment',
     array(
         'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474','fourteenxt'),
-        'section' => 'fourteenxt_general_options',
-		'priority' => 8,
+        'section' => 'fourteenxt_content_options',
+		'priority' => 6,
         'type' => 'text',
     ));
 	
@@ -158,11 +164,40 @@ function fourteenxt_customize_register( $wp_customize ) {
 	$wp_customize->add_control( 'fourteenxt_feed_cat', array(
 		'settings' => 'fourteenxt_feed_cat',
 		'label'   => __('Select Blog Feed Category:', 'fourteenxt'),
-		'section'  => 'fourteenxt_general_options',
-		'priority' => 9,
+		'section'  => 'fourteenxt_content_options',
+		'priority' => 7,
 		'type'    => 'select',
 		'choices' => $cats,
 	));
+	
+	$wp_customize->add_setting(
+        'fourteenxt_home_excerpts'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_home_excerpts',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Switch blog feed to show excerpts?', 'fourteenxt'),
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 8,
+        )
+    );
+	
+	$wp_customize->add_setting(
+    'fourteenxt_excerpt_length',
+    array(
+        'default' => 55,
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_excerpt_length',
+    array(
+        'label' => __('Enter desired home excerpt length (numbers only!) - default is 55.','fourteenxt'),
+        'section' => 'fourteenxt_content_options',
+		'priority' => 9,
+        'type' => 'text',
+    ));
 	
 	// Add FitVids to site
     $wp_customize->add_setting(
