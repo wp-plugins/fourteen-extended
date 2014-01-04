@@ -132,5 +132,27 @@ if ( is_search() ) :
 <?php 
 endif; }
 
+if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) { ?>
+    <style>
+	    .site:before,
+        #secondary {
+		    width: 0;
+		    display: none;
+	    }
+		.featured-content {
+            padding-left: 0;
+        }
+		.site-content, .site-main .widecolumn {
+            margin-left: 0;
+        }
+		.hentry {
+            max-width: 900px;
+        }
+		.post-thumbnail img {
+		    width: 100%;
+		}
+	</style>
+<?php }
+
 }
 add_action( 'wp_head', 'fourteenxt_extra_scripts' );

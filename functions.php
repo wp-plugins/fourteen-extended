@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteen-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.1.2
+Version:     1.1.3
 License:     GPL
 */
 
@@ -167,3 +167,10 @@ add_action( 'wp_footer', 'fourteenxt_fitthem', 210 );
 
 // Styles Moved to inc folder - since v1.0.9
 require_once('inc/fourteenxt-styles.php'); // Include Extended Styles
+
+if ( get_theme_mod( 'fourteenxt_featured_visibility' ) != 0 ) {
+	function fourteenxt_remove_pre_get_posts() {
+	    remove_action( 'pre_get_posts', array( 'Featured_Content', 'pre_get_posts' ) );
+    }
+add_action( 'init', 'fourteenxt_remove_pre_get_posts', 31 );
+}

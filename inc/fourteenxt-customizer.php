@@ -39,7 +39,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 1,
         )
     );
-	
+		
 	// Primary position switch - float it to the left.
 	$wp_customize->add_setting( 'fourteenxt_primary_menu_float', array(
 		'default' => 'right',
@@ -55,6 +55,21 @@ function fourteenxt_customize_register( $wp_customize ) {
             'left'  => __( 'Float Left', 'fourteenxt' ),
         ),
     ));
+	
+	// Lets center the site shall we
+    $wp_customize->add_setting(
+        'fourteenxt_hide_left_sidebar'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_hide_left_sidebar',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Remove Left Sidebar? - Hide left sidebar sitewide', 'fourteenxt'),
+        'section'  => 'fourteenxt_general_options',
+		'priority' => 3,
+        )
+    );
 	
 	// Set Blog feed to full width i.e. hide the content sidebar.
 	$wp_customize->add_setting(
@@ -140,7 +155,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	$wp_customize->add_control(
     'fourteenxt_content_width_adjustment',
     array(
-        'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474','fourteenxt'),
+        'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474. Set to 700 when hiding left sidebar only!','fourteenxt'),
         'section' => 'fourteenxt_content_options',
 		'priority' => 6,
         'type' => 'text',
@@ -243,5 +258,20 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 3,
         'type' => 'text',
     ));
+	
+	// Add option to Featured tab to show featured content in blog feed
+	$wp_customize->add_setting(
+        'fourteenxt_featured_visibility'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_featured_visibility',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Show Featured Posts in blog feed?', 'fourteenxt'),
+        'section'  => 'featured_content',
+		'priority' => 31,
+        )
+    );
 }
 add_action( 'customize_register', 'fourteenxt_customize_register' );
