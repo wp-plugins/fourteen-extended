@@ -25,6 +25,12 @@ function fourteenxt_customize_register( $wp_customize ) {
        'priority'   => 32,
     ) );
 	
+	$wp_customize->add_section( 'fourteenxt_slider_options' , array(
+       'title'      => __('Featured Slider Options','fourteenxt'),
+	   'description' => sprintf( __( 'Use the following settings to set slider options. Use wisely - in most cases it is best to leave the width setting as is! Only check the "Remove featured background" box if you have reduced the width setting', 'fourteenxt' )),
+       'priority'   => 131,
+    ) );
+	
 	// Lets center the site shall we
     $wp_customize->add_setting(
         'fourteenxt_center_site'
@@ -70,6 +76,21 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 3,
         )
     );
+	
+	$wp_customize->add_setting(
+    'fourteenxt_overall_content_width',
+    array(
+        'default' => '1038',
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_overall_content_width',
+    array(
+        'label' => __('Set Overall Content (hentry) max-width (numbers only!) - maximum recommended is 1260 & Default is 1038.','fourteenxt'),
+        'section' => 'fourteenxt_general_options',
+		'priority' => 4,
+        'type' => 'text',
+    ));
 	
 	// Set Blog feed to full width i.e. hide the content sidebar.
 	$wp_customize->add_setting(
@@ -271,6 +292,80 @@ function fourteenxt_customize_register( $wp_customize ) {
         'label'    => __('Show Featured Posts in blog feed?', 'fourteenxt'),
         'section'  => 'featured_content',
 		'priority' => 31,
+        )
+    );
+	
+	// Begin Slider Options
+	$wp_customize->add_setting(
+        'fourteenxt_enable_autoslide'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_enable_autoslide',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Check to set Slider to Auto Slide', 'fourteenxt'),
+        'section'  => 'fourteenxt_slider_options',
+		'priority' => 1,
+        )
+    );
+	
+	$wp_customize->add_setting(
+    'fourteenxt_slider_width',
+    array(
+        'default' => '1600',
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_slider_width',
+    array(
+        'label' => __('Set Slider max-width (numbers only!) - Default is 1600.','fourteenxt'),
+        'section' => 'fourteenxt_slider_options',
+		'priority' => 2,
+        'type' => 'text',
+    ));
+	
+	$wp_customize->add_setting(
+    'fourteenxt_slider_height',
+    array(
+        'default' => '500',
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_slider_height',
+    array(
+        'label' => __('Set Slider max-height (numbers only!) - Default is 500!','fourteenxt'),
+        'section' => 'fourteenxt_slider_options',
+		'priority' => 3,
+        'type' => 'text',
+    ));
+	
+	$wp_customize->add_setting(
+    'fourteenxt_slider_topmargin',
+    array(
+        'default' => '0',
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_slider_topmargin',
+    array(
+        'label' => __('Set Slider Top Margin (numbers only!) - Default is 0!','fourteenxt'),
+        'section' => 'fourteenxt_slider_options',
+		'priority' => 4,
+        'type' => 'text',
+    ));
+	
+	$wp_customize->add_setting(
+        'fourteenxt_featured_bg_visibility'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_featured_bg_visibility',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Remove the featured background?', 'fourteenxt'),
+        'section'  => 'fourteenxt_slider_options',
+		'priority' => 5,
         )
     );
 }

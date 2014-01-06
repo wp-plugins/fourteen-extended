@@ -132,7 +132,8 @@ if ( is_search() ) :
 <?php 
 endif; }
 
-if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) { ?>
+if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) { 
+?>
     <style>
 	    .site:before,
         #secondary {
@@ -145,14 +146,58 @@ if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) { ?>
 		.site-content, .site-main .widecolumn {
             margin-left: 0;
         }
+	</style>
+<?php } 
+
+if ( get_theme_mod( 'fourteenxt_overall_content_width' ) ) { 
+$overall_conten_width  = esc_html( get_theme_mod( 'fourteenxt_overall_content_width' )); 
+ ?>
+    <style>
 		.hentry {
-            max-width: 900px;
+            max-width: <?php echo $overall_conten_width; ?>px;
         }
-		.post-thumbnail img {
-		    width: 100%;
+		.site-content .post-thumbnail img {
+		    max-width: <?php echo $overall_conten_width; ?>px;
+			width: 100%;
 		}
+		.post-thumbnail {
+            background: none;
+        }
+		a.post-thumbnail:hover {
+           background-color: transparent;
+        }
+	</style>
+<?php } 
+$overall_slider_width  = esc_html( get_theme_mod( 'fourteenxt_slider_width' ));
+$overall_slider_height = esc_html( get_theme_mod( 'fourteenxt_slider_height' ));
+$slider_margin_top     = esc_html( get_theme_mod( 'fourteenxt_slider_topmargin' ));
+?>
+    <style>
+		.slider .featured-content .hentry {
+			max-height: <?php echo $overall_slider_height; ?>px;
+        }
+		.slider .featured-content {
+	        max-width: <?php echo $overall_slider_width; ?>px;
+			margin: <?php echo $slider_margin_top; ?>px auto;
+        }
+		.slider .featured-content .post-thumbnail img {
+            max-width: <?php echo $overall_slider_width; ?>px;
+			width: 100%;
+        }
+		.post-thumbnail {
+            background: none;
+        }
+		a.post-thumbnail:hover {
+            background-color: transparent;
+        }
+	</style>
+<?php
+if ( get_theme_mod( 'fourteenxt_featured_bg_visibility' ) != 0 ) { ?>
+    <style>
+		.featured-content {
+            background: none;
+        }
 	</style>
 <?php }
-
 }
 add_action( 'wp_head', 'fourteenxt_extra_scripts' );

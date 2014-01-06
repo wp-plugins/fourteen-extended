@@ -5,7 +5,7 @@ Plugin URI:  http://wordpress.org/plugins/fourteen-extended
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.1.3
+Version:     1.1.4
 License:     GPL
 */
 
@@ -173,4 +173,34 @@ if ( get_theme_mod( 'fourteenxt_featured_visibility' ) != 0 ) {
 	    remove_action( 'pre_get_posts', array( 'Featured_Content', 'pre_get_posts' ) );
     }
 add_action( 'init', 'fourteenxt_remove_pre_get_posts', 31 );
+}
+
+if ( get_theme_mod( 'fourteenxt_enable_autoslide' ) != 0 ) {
+function fourteenxt_autoslide() { ?>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+      var duration = 5;
+       var current = 1;
+	   
+	    function auto_slide(){
+            if(current == -1)
+        return false;
+       
+        jQuery('.featured-content .slider-next')
+		    .eq(current % jQuery('.featured-content .slider-next')
+		    .length)
+			.trigger('click',[true]);
+        current++;
+		};
+    
+        setInterval(function(){
+	        auto_slide()
+		}, 
+		    duration * 1000
+		);
+
+	});
+</script>
+<?php } // End auto slide script
+add_action( 'wp_footer', 'fourteenxt_autoslide', 210 );
 }
