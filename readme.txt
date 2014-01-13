@@ -3,7 +3,7 @@ Contributors: ZGani - AKA Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
 Tested up to: 3.8
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
@@ -42,6 +42,8 @@ Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen 
 
 9. Include FitVids script for true responsive videos - Enable/Disable script plus set default and custom selectors.
 
+Now with complete width control - go full screen at 3200px or go boxed down to 940px. Unlimited width control!
+
 * And more to come...
 
 Fourteen Extended will help you center align your entire site, set your blog feed to the glorious Twenty Fourteen full width look plus an option to set the single posts to full width too! Please report any issues on the support forums.
@@ -68,6 +70,14 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+
+= 1.1.5 =
+* NEW: Added option to set maximum site width.
+* NEW: Added option to set overall image height.
+* NEW: Added option to remove white space above content.
+* NEW: Added option to remove widget title top border.
+* NEW: Added option to show full content instead of the list view on mobile devices - home/blog index only.
+* Adjusted the excerpt option to show first video as the excerpt.
 
 = 1.1.4 =
 * NEW: Added options to adjust overall content area width when left sidebar is disabled.

@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Fourteen Extended
-Plugin URI:  http://wordpress.org/plugins/fourteen-extended
+Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.1.4
+Version:     1.1.5
 License:     GPL
 */
 
@@ -30,48 +30,6 @@ add_action( 'plugins_loaded', 'fourteenxt_extended_load_textdomain' );
 // Customizer Moved to inc folder - since v1.0.9
 require_once('inc/fourteenxt-customizer.php'); // Include Extended Customizer
 
-/**
- * Extend the default WordPress body classes and run them according to our settings.
- *
- * Adds body classes Index views Full-width content layout.
- * Single views Full-width content layout.
- * Fully centred site
- *
- * @since Fourteen Extended 1.0.0
- *
- * @param array $classes A list of existing body class values.
- * @return array The filtered body class list.
- */
-function fourteenxt_body_classes( $classes ) {
-global $content_width;
-	
-	if (get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
-    if (is_home() ) : 
-        $classes[] = 'full-width';
-	endif;
-    }
-	
-	if (get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
-	if (is_singular() && !is_page() ) : 
-        $classes[] = 'full-width';
-   	endif;
-	}
-	
-	if (get_theme_mod( 'fourteenxt_fullwidth_archives' ) != 0 ) {
-	if ( is_archive() ) : 
-        $classes[] = 'full-width';
-   	endif;
-	}
-	
-	if (get_theme_mod( 'fourteenxt_fullwidth_searches' ) != 0 ) {
-	if ( is_search() ) : 
-        $classes[] = 'full-width';
-   	endif;
-	}
-	
-	return $classes;
-}
-add_filter( 'body_class', 'fourteenxt_body_classes' );
 
 function fourteenxt_blog_feed_cat( $query ) {
     if ( is_admin() || ! $query->is_main_query() )
@@ -117,14 +75,28 @@ function fourteenxt_excerpts($content = false) {
 				array_push($words, $more);
 				$content = implode(' ', $words);
 			endif;
-			$content = '<p>' . $content . '</p>';
-
+			
+			// If post format is video use first video as excerpt
+            $postcustom = get_post_custom_keys();
+            if ($postcustom){
+                $i = 1;
+                foreach ($postcustom as $key){
+                    if (strpos($key,'oembed')){
+                        foreach (get_post_custom_values($key) as $video){
+                            if ($i == 1){
+                            $content = $video;
+                            }
+                            $i++;
+                        }
+                    }  
+                }
+            }
+			$content = $content;
 		endif;
 	endif;
 
 // Make sure to return the content
 	return $content;
-
 }
 add_filter('the_content', 'fourteenxt_excerpts');
 
@@ -204,3 +176,97 @@ function fourteenxt_autoslide() { ?>
 <?php } // End auto slide script
 add_action( 'wp_footer', 'fourteenxt_autoslide', 210 );
 }
+
+
+/**
+ * Extend the default WordPress body classes and run them according to our settings.
+ *
+ * Adds body classes Index views Full-width content layout.
+ * Single views Full-width content layout.
+ * Fully centred site
+ *
+ * @since Fourteen Extended 1.0.0
+ *
+ * @param array $classes A list of existing body class values.
+ * @return array The filtered body class list.
+ */
+ 
+if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
+	function fourteenxt_remove_body_classes() {
+	    remove_filter( 'body_class', 'twentyfourteen_body_classes' );
+    }
+    add_action( 'init', 'fourteenxt_remove_body_classes', 31 );
+	
+	function fourteenxt_body_classes_reset( $classes ) {
+	if ( is_multi_author() ) {
+		$classes[] = 'group-blog';
+	}
+
+	if ( get_header_image() ) {
+		$classes[] = 'header-image';
+	} else {
+		$classes[] = 'masthead-fixed';
+	}
+
+	if ( is_archive() || is_search() || ! is_home() ) {
+		$classes[] = 'list-view';
+	}
+
+	if ( ( ! is_active_sidebar( 'sidebar-2' ) )
+		|| is_page_template( 'page-templates/full-width.php' )
+		|| is_page_template( 'page-templates/contributors.php' )
+		|| is_attachment() ) {
+		$classes[] = 'full-width';
+	}
+
+	if ( is_active_sidebar( 'sidebar-3' ) ) {
+		$classes[] = 'footer-widgets';
+	}
+
+	if ( is_singular() && ! is_front_page() ) {
+		$classes[] = 'singular';
+	}
+
+	if ( is_front_page() && 'slider' == get_theme_mod( 'featured_content_layout' ) ) {
+		$classes[] = 'slider';
+	} elseif ( is_front_page() ) {
+		$classes[] = 'grid';
+	}
+
+	return $classes;
+}
+add_filter( 'body_class', 'fourteenxt_body_classes_reset' );
+}
+
+
+
+function fourteenxt_body_classes( $classes ) {
+global $content_width;
+	
+	if (get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
+    if (is_home() ) : 
+        $classes[] = 'full-width';
+	endif;
+    }
+	
+	if (get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
+	if (is_singular() && !is_page() ) : 
+        $classes[] = 'full-width';
+   	endif;
+	}
+	
+	if (get_theme_mod( 'fourteenxt_fullwidth_archives' ) != 0 ) {
+	if ( is_archive() ) : 
+        $classes[] = 'full-width';
+   	endif;
+	}
+	
+	if (get_theme_mod( 'fourteenxt_fullwidth_searches' ) != 0 ) {
+	if ( is_search() ) : 
+        $classes[] = 'full-width';
+   	endif;
+	}
+		
+	return $classes;
+}
+add_filter( 'body_class', 'fourteenxt_body_classes' );

@@ -4,6 +4,7 @@ function fourteenxt_general_css(){
 
 if ( get_theme_mod( 'fourteenxt_primary_menu_float' ) ) {
     $primary_menu_float = get_theme_mod( 'fourteenxt_primary_menu_float' );
+	$max_site_width     = get_theme_mod( 'fourteenxt_maximum_site_width' );
 	// Apply custom settings to appropriate element ?>
     <style>
 	    @media screen and (min-width: 783px) {
@@ -18,9 +19,14 @@ if ( get_theme_mod( 'fourteenxt_primary_menu_float' ) ) {
 if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
  // Apply site layout settings to appropriate element ?>
     <style>
-	    .site {
+		.site {
             margin: 0 auto;
+			max-width: <?php echo $max_site_width; ?>px;
+			width: 100%;
         }
+		.site-header {
+		    max-width: <?php echo $max_site_width; ?>px;
+		}
 		@media screen and (min-width: 1110px) {
 	        .archive-header,
 	        .comments-area,
@@ -35,6 +41,31 @@ if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
 		        padding-left: 55px;
 	        }
         }
+	</style>
+<?php }
+
+if ( get_theme_mod( 'fourteenxt_content_top_padding' ) != 0 ) { ?>
+    <style>
+        .content-area {
+	        padding-top: 0;
+        }
+        .content-sidebar {
+	        padding-top: 0;
+        }
+		@media screen and (min-width: 846px) {
+	        .content-area,
+	        .content-sidebar {
+		        padding-top: 0;
+	        }
+        }
+	</style>
+<?php }
+
+if ( get_theme_mod( 'fourteenxt_sidebar_top_border' ) != 0 ) { ?>
+    <style>
+		.content-sidebar .widget .widget-title {
+		    border-top: 0;
+		}
 	</style>
 <?php }
  
@@ -150,7 +181,8 @@ if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) {
 <?php } 
 
 if ( get_theme_mod( 'fourteenxt_overall_content_width' ) ) { 
-$overall_conten_width  = esc_html( get_theme_mod( 'fourteenxt_overall_content_width' )); 
+$overall_conten_width  = esc_html( get_theme_mod( 'fourteenxt_overall_content_width' ));
+$overall_image_height  = esc_html( get_theme_mod( 'fourteenxt_overall_image_height' ));  
  ?>
     <style>
 		.hentry {
@@ -166,8 +198,16 @@ $overall_conten_width  = esc_html( get_theme_mod( 'fourteenxt_overall_content_wi
 		a.post-thumbnail:hover {
            background-color: transparent;
         }
+		img.size-full,
+        img.size-large,
+        .wp-post-image,
+        .post-thumbnail img {
+	        max-height: <?php echo $overall_image_height; ?>px;
+	        max-width: 100%;
+        }
 	</style>
-<?php } 
+<?php }
+if ( get_theme_mod( 'fourteenxt_slider_width' ) ) { 
 $overall_slider_width  = esc_html( get_theme_mod( 'fourteenxt_slider_width' ));
 $overall_slider_height = esc_html( get_theme_mod( 'fourteenxt_slider_height' ));
 $slider_margin_top     = esc_html( get_theme_mod( 'fourteenxt_slider_topmargin' ));
@@ -198,6 +238,6 @@ if ( get_theme_mod( 'fourteenxt_featured_bg_visibility' ) != 0 ) { ?>
             background: none;
         }
 	</style>
-<?php }
+<?php } }
 }
 add_action( 'wp_head', 'fourteenxt_extra_scripts' );

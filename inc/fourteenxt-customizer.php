@@ -25,6 +25,12 @@ function fourteenxt_customize_register( $wp_customize ) {
        'priority'   => 32,
     ) );
 	
+	$wp_customize->add_section( 'fourteenxt_mobile_options' , array(
+       'title'      => __('TwentyFourteen Mobile Options','fourteenxt'),
+	   'description' => sprintf( __( 'Use the following settings to set mobile options. Options are: Show full content on home page on mobile instead of list view!', 'fourteenxt' )),
+       'priority'   => 33,
+    ) );
+	
 	$wp_customize->add_section( 'fourteenxt_slider_options' , array(
        'title'      => __('Featured Slider Options','fourteenxt'),
 	   'description' => sprintf( __( 'Use the following settings to set slider options. Use wisely - in most cases it is best to leave the width setting as is! Only check the "Remove featured background" box if you have reduced the width setting', 'fourteenxt' )),
@@ -45,6 +51,21 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 1,
         )
     );
+	
+	$wp_customize->add_setting(
+    'fourteenxt_maximum_site_width',
+    array(
+        'default' => '1260',
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_maximum_site_width',
+    array(
+        'label' => __('Set Overall Site max-width (numbers only!) - Default is 1260.','fourteenxt'),
+        'section' => 'fourteenxt_general_options',
+		'priority' => 2,
+        'type' => 'text',
+    ));
 		
 	// Primary position switch - float it to the left.
 	$wp_customize->add_setting( 'fourteenxt_primary_menu_float', array(
@@ -54,7 +75,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	$wp_customize->add_control( 'fourteenxt_primary_menu_float', array(
     'label'   => __( 'Float Primary Menu to the left?', 'fourteenxt' ),
     'section' => 'fourteenxt_general_options',
-	'priority' => 2,
+	'priority' => 3,
     'type'    => 'radio',
         'choices' => array(
             'right' => __( 'Default - Right', 'fourteenxt' ),
@@ -73,7 +94,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Remove Left Sidebar? - Hide left sidebar sitewide', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
-		'priority' => 3,
+		'priority' => 4,
         )
     );
 	
@@ -88,7 +109,22 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Overall Content (hentry) max-width (numbers only!) - maximum recommended is 1260 & Default is 1038.','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 4,
+		'priority' => 5,
+        'type' => 'text',
+    ));
+	
+	$wp_customize->add_setting(
+    'fourteenxt_overall_image_height',
+    array(
+        'default' => '572',
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_overall_image_height',
+    array(
+        'label' => __('Set Overall Content Image max-height (numbers only!) - maximum recommended is 572.','fourteenxt'),
+        'section' => 'fourteenxt_general_options',
+		'priority' => 6,
         'type' => 'text',
     ));
 	
@@ -153,6 +189,20 @@ function fourteenxt_customize_register( $wp_customize ) {
     );
 	
 	$wp_customize->add_setting(
+        'fourteenxt_content_top_padding'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_content_top_padding',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Check to remove the white space above content', 'fourteenxt'),
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 5,
+        )
+    );
+	
+	$wp_customize->add_setting(
     'fourteenxt_content_off_featured_image',
     array(
         'default' => '',
@@ -163,7 +213,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Enter 1 or more for padding to move content off featured image (numbers only!) - default is -48','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 5,
+		'priority' => 6,
         'type' => 'text',
     ));
 	
@@ -178,7 +228,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474. Set to 700 when hiding left sidebar only!','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 6,
+		'priority' => 7,
         'type' => 'text',
     ));
 	
@@ -201,7 +251,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'settings' => 'fourteenxt_feed_cat',
 		'label'   => __('Select Blog Feed Category:', 'fourteenxt'),
 		'section'  => 'fourteenxt_content_options',
-		'priority' => 7,
+		'priority' => 8,
 		'type'    => 'select',
 		'choices' => $cats,
 	));
@@ -216,7 +266,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Switch blog feed to show excerpts?', 'fourteenxt'),
         'section'  => 'fourteenxt_content_options',
-		'priority' => 8,
+		'priority' => 9,
         )
     );
 	
@@ -231,9 +281,23 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Enter desired home excerpt length (numbers only!) - default is 55.','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 9,
+		'priority' => 10,
         'type' => 'text',
     ));
+	
+	$wp_customize->add_setting(
+        'fourteenxt_sidebar_top_border'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_sidebar_top_border',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Check to remove widget title top border', 'fourteenxt'),
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 11,
+        )
+    );
 	
 	// Add FitVids to site
     $wp_customize->add_setting(
@@ -279,6 +343,22 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 3,
         'type' => 'text',
     ));
+	
+	// Mobile View Options
+	// Lets center the site shall we
+    $wp_customize->add_setting(
+        'fourteenxt_body_class_filters'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_body_class_filters',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Turn home page List View off? i.e show full content!', 'fourteenxt'),
+        'section'  => 'fourteenxt_mobile_options',
+		'priority' => 1,
+        )
+    );
 	
 	// Add option to Featured tab to show featured content in blog feed
 	$wp_customize->add_setting(
