@@ -5,7 +5,7 @@ Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.1.5
+Version:     1.1.6
 License:     GPL
 */
 
@@ -14,7 +14,7 @@ if ( get_template() != 'twentyfourteen' ) {
 	return;
 }
 
-/**
+/** 
  * Loads the plugin textdomain for translations.
  *
  * @since Fourteen Extended 1.0.0
@@ -109,6 +109,36 @@ function fourteenxt_read_more() {
 //End filter to the_content
 }
 
+if ( get_theme_mod( 'fourteenxt_enable_autoslide' ) != 0 &&  get_theme_mod( 'featured_content_layout' ) == 'slider' ) {
+
+//dequeue/enqueue scripts
+function fourteenxt_featured_content_scripts() {
+if ( is_front_page() ) :
+wp_dequeue_script( 'twentyfourteen-script' );
+wp_dequeue_script( 'twentyfourteen-slider' );
+
+wp_enqueue_script( 'fourteenxt-script', plugin_dir_url( __FILE__ ) . 'js/functions.js', array( 'jquery', 'fourteenxt-slider' ), '' , true );
+
+wp_enqueue_script( 'fourteenxt-slider', plugin_dir_url( __FILE__ ) . 'js/jquery.flexslider-min.js', array( 'jquery', ), '' , true );
+wp_localize_script( 'fourteenxt-slider', 'featuredSliderDefaults', array(
+'prevText' => __( 'Previous', 'fourteenxt' ),
+'nextText' => __( 'Next', 'fourteenxt' )
+) );
+
+if ( get_theme_mod( 'fourteenxt_slider_transition' ) ==  'slide' ) :
+    wp_enqueue_script( 'fourteenxt-slider-slide', plugin_dir_url( __FILE__ ) . 'js/slider-slide.js', array( 'jquery', ), '' , true );
+
+elseif ( get_theme_mod( 'fourteenxt_slider_transition' ) == 'fade' ) :
+    wp_enqueue_script( 'fourteenxt-slider-fade', plugin_dir_url( __FILE__ ) . 'js/slider-fade.js', array( 'jquery', ), '' , true );
+endif;
+
+endif;
+}
+
+add_action( 'wp_enqueue_scripts' , 'fourteenxt_featured_content_scripts' , 210 );
+}
+
+
 /**
  * Loads the fitvids plugin.
  *
@@ -124,7 +154,7 @@ function fourteenxt_fitvids_scripts() {
     wp_enqueue_script( 'fourteenxt_fitvids' );
 	
 } // end fitvids_scripts
-add_action('wp_enqueue_scripts','fourteenxt_fitvids_scripts', 20);
+add_action('wp_enqueue_scripts','fourteenxt_fitvids_scripts', 210);
 
 // selector script
 function fourteenxt_fitthem() { ?>
@@ -134,7 +164,7 @@ function fourteenxt_fitthem() { ?>
    	});
    	</script>
 <?php } // End selector script
-add_action( 'wp_footer', 'fourteenxt_fitthem', 210 );
+add_action( 'wp_footer', 'fourteenxt_fitthem', 220 );
 } // End FitVids enable
 
 // Styles Moved to inc folder - since v1.0.9
@@ -146,37 +176,6 @@ if ( get_theme_mod( 'fourteenxt_featured_visibility' ) != 0 ) {
     }
 add_action( 'init', 'fourteenxt_remove_pre_get_posts', 31 );
 }
-
-if ( get_theme_mod( 'fourteenxt_enable_autoslide' ) != 0 ) {
-function fourteenxt_autoslide() { ?>
-<script type="text/javascript">
-    jQuery(document).ready(function(){
-      var duration = 5;
-       var current = 1;
-	   
-	    function auto_slide(){
-            if(current == -1)
-        return false;
-       
-        jQuery('.featured-content .slider-next')
-		    .eq(current % jQuery('.featured-content .slider-next')
-		    .length)
-			.trigger('click',[true]);
-        current++;
-		};
-    
-        setInterval(function(){
-	        auto_slide()
-		}, 
-		    duration * 1000
-		);
-
-	});
-</script>
-<?php } // End auto slide script
-add_action( 'wp_footer', 'fourteenxt_autoslide', 210 );
-}
-
 
 /**
  * Extend the default WordPress body classes and run them according to our settings.
@@ -208,7 +207,7 @@ if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
 		$classes[] = 'masthead-fixed';
 	}
 
-	if ( is_archive() || is_search() || ! is_home() ) {
+	if ( is_archive() || is_search() ) {
 		$classes[] = 'list-view';
 	}
 
@@ -223,7 +222,7 @@ if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
 		$classes[] = 'footer-widgets';
 	}
 
-	if ( is_singular() && ! is_front_page() ) {
+	if ( is_singular() || ! is_front_page() ) {
 		$classes[] = 'singular';
 	}
 
@@ -237,7 +236,6 @@ if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
 }
 add_filter( 'body_class', 'fourteenxt_body_classes_reset' );
 }
-
 
 
 function fourteenxt_body_classes( $classes ) {

@@ -27,7 +27,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	
 	$wp_customize->add_section( 'fourteenxt_mobile_options' , array(
        'title'      => __('TwentyFourteen Mobile Options','fourteenxt'),
-	   'description' => sprintf( __( 'Use the following settings to set mobile options. Options are: Show full content on home page on mobile instead of list view!', 'fourteenxt' )),
+	   'description' => sprintf( __( 'Use the following settings to set mobile options. Options are: Show full content on home page on mobile instead of list view. Featured content mobile layout - grid or slider. Please note that the mobile layout will only work if the device is a mobile therefore minimizing the desktop window will have no effect and will show the default layout set in the featured section.', 'fourteenxt' )),
        'priority'   => 33,
     ) );
 	
@@ -345,7 +345,6 @@ function fourteenxt_customize_register( $wp_customize ) {
     ));
 	
 	// Mobile View Options
-	// Lets center the site shall we
     $wp_customize->add_setting(
         'fourteenxt_body_class_filters'
     );
@@ -359,6 +358,27 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 1,
         )
     );
+	
+	$wp_customize->add_setting( 
+	    'fourteenxt_layout_mobile', 
+	    array( 
+	        'default' => 'grid' 
+	    )
+	);
+
+    $wp_customize->add_control( 
+        'fourteenxt_layout_mobile', array(
+            'label' => __( 'Featured Content layout for mobile devices', 'fourteenxt'),
+            'section' => 'fourteenxt_mobile_options',
+			'priority' => 2,
+            'settings' => 'fourteenxt_layout_mobile',
+            'type' => 'select',
+            'choices' => array(
+                'grid' => 'Grid',
+                'slider' => 'Slider',
+            ),
+        ) 
+	);
 	
 	// Add option to Featured tab to show featured content in blog feed
 	$wp_customize->add_setting(
@@ -384,11 +404,27 @@ function fourteenxt_customize_register( $wp_customize ) {
         'fourteenxt_enable_autoslide',
     array(
         'type'     => 'checkbox',
-        'label'    => __('Check to set Slider to Auto Slide', 'fourteenxt'),
+        'label'    => __('Check to set Slider to Auto Fade/Slide', 'fourteenxt'),
         'section'  => 'fourteenxt_slider_options',
 		'priority' => 1,
         )
     );
+	
+	$wp_customize->add_setting( 'fourteenxt_slider_transition', array(
+		'default' => 'slide',
+	) );
+
+	
+	$wp_customize->add_control( 'fourteenxt_slider_transition', array(
+    'label'   => __( 'Slider Transition', 'fourteenxt' ),
+    'section' => 'fourteenxt_slider_options',
+	'priority' => 2,
+    'type'    => 'radio',
+        'choices' => array(
+            'slide' => __( 'Slide', 'fourteenxt' ),
+            'fade' => __( 'Fade', 'fourteenxt' ),
+        ),
+    ));
 	
 	$wp_customize->add_setting(
     'fourteenxt_slider_width',
@@ -401,7 +437,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Slider max-width (numbers only!) - Default is 1600.','fourteenxt'),
         'section' => 'fourteenxt_slider_options',
-		'priority' => 2,
+		'priority' => 3,
         'type' => 'text',
     ));
 	
@@ -416,7 +452,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Slider max-height (numbers only!) - Default is 500!','fourteenxt'),
         'section' => 'fourteenxt_slider_options',
-		'priority' => 3,
+		'priority' => 4,
         'type' => 'text',
     ));
 	
@@ -431,7 +467,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Slider Top Margin (numbers only!) - Default is 0!','fourteenxt'),
         'section' => 'fourteenxt_slider_options',
-		'priority' => 4,
+		'priority' => 5,
         'type' => 'text',
     ));
 	
@@ -445,8 +481,22 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Remove the featured background?', 'fourteenxt'),
         'section'  => 'fourteenxt_slider_options',
-		'priority' => 5,
+		'priority' => 6,
         )
     );
+
 }
 add_action( 'customize_register', 'fourteenxt_customize_register' );
+
+
+function fourteenxt_mobile_layout( $value ) {
+
+if ( wp_is_mobile() ){
+return get_theme_mod( 'fourteenxt_layout_mobile', 'grid' );
+} else {
+return $value;
+}
+}
+
+add_filter( 'theme_mod_featured_content_layout', 'fourteenxt_mobile_layout' );
+

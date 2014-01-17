@@ -177,6 +177,17 @@ if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) {
 		.site-content, .site-main .widecolumn {
             margin-left: 0;
         }
+		@media screen and (min-width: 1008px) {
+	        .search-box-wrapper {
+		        padding-left: 0;
+	        }
+		}
+		@media screen and (min-width: 1080px) {
+		    .search-box-wrapper,
+	        .featured-content {
+		        padding-left: 0;
+	        }
+		}
 	</style>
 <?php } 
 

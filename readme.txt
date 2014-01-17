@@ -3,11 +3,13 @@ Contributors: ZGani - AKA Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
 Tested up to: 3.8
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
 == Description ==
+Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen theme without touching a single line of code.
+
 Don't like the site alignment? 
 
 No clue how to get the blog feed to display in the glorious Twenty Fourteen full width? 
@@ -22,7 +24,7 @@ Increase the content width for full width blog feed/posts/archives/searches?
 
 Then wait no more! Stop fumbling with child themes and code - all it takes is a few check boxes, make a couple of entries, save and you are done and dusted.
 
-Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen theme. It provides TwentyFourteen General Option & FitVids tabs with options to:
+Current options are:
 
 1. Center align the entire site.
 
@@ -41,6 +43,10 @@ Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen 
 8. Float the Primary menu to the left.
 
 9. Include FitVids script for true responsive videos - Enable/Disable script plus set default and custom selectors.
+
+10. Set slider to auto slide with options for slider transition fade/slide.
+
+11. Set Featured content mobile layout view i.e. set desktop to grid and mobile to slider.
 
 Now with complete width control - go full screen at 3200px or go boxed down to 940px. Unlimited width control!
 
@@ -70,6 +76,13 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+
+= 1.1.6 =
+* Reworked the auto slide option to use the original FlexSlider script.
+* NEW: Added options to select either slide or fade for the auto slide settings.
+* NEW: Added option to select featured layout for mobile devices - only works when viewed on a mobile device!
+* Minor CSS adjustments
+* Moved screenshots in to the assets folder to reduce plugin overall size
 
 = 1.1.5 =
 * NEW: Added option to set maximum site width.
