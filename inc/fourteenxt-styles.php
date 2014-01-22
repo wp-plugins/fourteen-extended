@@ -44,7 +44,8 @@ if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
 	</style>
 <?php }
 
-if ( get_theme_mod( 'fourteenxt_content_top_padding' ) != 0 ) { ?>
+if ( get_theme_mod( 'fourteenxt_content_top_padding' ) != 0 ) { 
+if ( ! is_singular() && has_post_thumbnail() ) : ?>
     <style>
         .content-area {
 	        padding-top: 0;
@@ -59,7 +60,7 @@ if ( get_theme_mod( 'fourteenxt_content_top_padding' ) != 0 ) { ?>
 	        }
         }
 	</style>
-<?php }
+<?php endif; }
 
 if ( get_theme_mod( 'fourteenxt_sidebar_top_border' ) != 0 ) { ?>
     <style>
@@ -122,6 +123,7 @@ if ( is_home() ) :
 	        .content-sidebar { display: none;}
 			.full-width .post-thumbnail img {
 	            width: 100%;
+				padding-top: 78px;
             }
 	    </style>
 <?php 
@@ -218,6 +220,7 @@ $overall_image_height  = esc_html( get_theme_mod( 'fourteenxt_overall_image_heig
         }
 	</style>
 <?php }
+
 if ( get_theme_mod( 'fourteenxt_slider_width' ) ) { 
 $overall_slider_width  = esc_html( get_theme_mod( 'fourteenxt_slider_width' ));
 $overall_slider_height = esc_html( get_theme_mod( 'fourteenxt_slider_height' ));

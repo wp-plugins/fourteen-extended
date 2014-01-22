@@ -77,6 +77,11 @@ You can use Fourteen Extended with both the default Twenty Fourteen and its chil
 
 == Changelog ==
 
+= 1.1.7 =
+* Fixed bug that was causing part of post thumbnail to pull up behind the navbar.
+* Fixed bug where single post was missing top padding when no feature image was attached.
+* Minor CSS adjustments to fix various small bugs.
+
 = 1.1.6 =
 * Reworked the auto slide option to use the original FlexSlider script.
 * NEW: Added options to select either slide or fade for the auto slide settings.
