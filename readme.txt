@@ -3,7 +3,7 @@ Contributors: ZGani - AKA Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
 Tested up to: 3.8
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
@@ -76,6 +76,10 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+= 1.1.8 =
+* Fixed the bug that caused a gap to appear above the featured content on last update.
+* NEW: Added option to control the content area padding when posts have no thumbnail image.
+* Minor fixes and adjustments.
 
 = 1.1.7 =
 * Fixed bug that was causing part of post thumbnail to pull up behind the navbar.

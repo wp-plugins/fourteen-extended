@@ -44,8 +44,81 @@ if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
 	</style>
 <?php }
 
-if ( get_theme_mod( 'fourteenxt_content_top_padding' ) != 0 ) { 
-if ( ! is_singular() && has_post_thumbnail() ) : ?>
+}
+add_action( 'wp_head', 'fourteenxt_general_css' );
+
+function fourteenxt_extra_scripts() {
+if ( get_theme_mod( 'fourteenxt_content_width_adjustment' ) ) {
+    $conten_max_width = esc_html( get_theme_mod( 'fourteenxt_content_width_adjustment' ));
+	// Apply site custom settings to appropriate element ?>
+    <style>
+	    .site-content .entry-header,
+        .site-content .entry-content,
+        .site-content .entry-summary,
+        .site-content .entry-meta,
+        .page-content {
+	        max-width: <?php echo $conten_max_width; ?>px;
+        }
+		.comments-area {
+            max-width: <?php echo $conten_max_width; ?>px;
+        }
+		.post-navigation, .image-navigation {
+            max-width: <?php echo $conten_max_width; ?>px;
+        }
+	</style>
+<?php }
+
+if ( get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
+if ( is_home() ) : 
+    ?>
+	    <style>
+			.content-sidebar { display: none;}
+			.full-width .site-content .post-thumbnail img {
+	            width: 100%;
+            }
+	    </style>
+<?php 
+endif; }
+
+if ( get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
+if ( is_singular() && !is_page()) : 
+    ?>
+	<style>
+	    .content-sidebar { display: none;}
+	    .full-width.singular .site-content .hentry .post-thumbnail img {
+	        width: 100%;
+        }
+	</style>
+<?php 
+endif; }
+
+if ( get_theme_mod( 'fourteenxt_fullwidth_archives' ) != 0 ) {
+if ( is_archive() ) : 
+    ?>
+	<style>
+	    .content-sidebar { display: none;}
+	    .full-width .post-thumbnail img {
+	        width: 100%;
+        }
+	</style>
+<?php 
+endif; }
+
+if ( get_theme_mod( 'fourteenxt_fullwidth_searches' ) != 0 ) {
+if ( is_search() ) : 
+    ?>
+	<style>
+	    .content-sidebar { display: none;}
+	    .full-width .site-content .post-thumbnail img {
+	        width: 100%;
+        }
+	</style>
+<?php 
+endif; }
+
+if ( get_theme_mod( 'fourteenxt_content_top_padding' ) != 0 ) {
+$no_thumb_offset = esc_html( get_theme_mod( 'fourteenxt_no_featured_image_offset' )); 
+if ( has_post_thumbnail() ) : ?>
     <style>
         .content-area {
 	        padding-top: 0;
@@ -53,14 +126,38 @@ if ( ! is_singular() && has_post_thumbnail() ) : ?>
         .content-sidebar {
 	        padding-top: 0;
         }
+		.full-width.singular .site-content .hentry .post-thumbnail img {
+            margin-top: 72px;
+        }
 		@media screen and (min-width: 846px) {
 	        .content-area,
 	        .content-sidebar {
 		        padding-top: 0;
 	        }
         }
+		@media screen and (max-width: 846px) {
+			.full-width.singular .site-content .hentry .post-thumbnail img {
+                margin-top: 48px;
+            }
+        }
 	</style>
-<?php endif; }
+<?php else : ?>
+    <style>
+        .content-area {
+	        padding-top: <?php echo $no_thumb_offset; ?>px;
+        }
+        .content-sidebar {
+	        padding-top: <?php echo $no_thumb_offset; ?>px;
+        }
+		@media screen and (min-width: 846px) {
+	        .content-area,
+	        .content-sidebar {
+		        padding-top: <?php echo $no_thumb_offset; ?>px;
+	        }
+        }
+	</style>
+<?php endif; 
+}
 
 if ( get_theme_mod( 'fourteenxt_sidebar_top_border' ) != 0 ) { ?>
     <style>
@@ -92,78 +189,6 @@ if ( get_theme_mod( 'fourteenxt_content_off_featured_image' ) ) {
 	</style>
 <?php }
 
-}
-add_action( 'wp_head', 'fourteenxt_general_css' );
-
-function fourteenxt_extra_scripts() {
-if ( get_theme_mod( 'fourteenxt_content_width_adjustment' ) ) {
-    $conten_max_width = esc_html( get_theme_mod( 'fourteenxt_content_width_adjustment' ));
-	// Apply site custom settings to appropriate element ?>
-    <style>
-	    .site-content .entry-header,
-        .site-content .entry-content,
-        .site-content .entry-summary,
-        .site-content .entry-meta,
-        .page-content {
-	        max-width: <?php echo $conten_max_width; ?>px;
-        }
-		.comments-area {
-            max-width: <?php echo $conten_max_width; ?>px;
-        }
-		.post-navigation, .image-navigation {
-            max-width: <?php echo $conten_max_width; ?>px;
-        }
-	</style>
-<?php }
-
-if ( get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
-if ( is_home() ) : 
-    ?>
-	    <style>
-	        .content-sidebar { display: none;}
-			.full-width .post-thumbnail img {
-	            width: 100%;
-				padding-top: 78px;
-            }
-	    </style>
-<?php 
-endif; }
-
-if ( get_theme_mod( 'fourteenxt_fullwidth_single_post' ) != 0 ) {
-if ( is_singular() && !is_page()) : 
-    ?>
-	<style>
-	    .content-sidebar { display: none;}
-	    .full-width .post-thumbnail img {
-	        width: 100%;
-        }
-	</style>
-<?php 
-endif; }
-
-if ( get_theme_mod( 'fourteenxt_fullwidth_archives' ) != 0 ) {
-if ( is_archive() ) : 
-    ?>
-	<style>
-	    .content-sidebar { display: none;}
-	    .full-width .post-thumbnail img {
-	        width: 100%;
-        }
-	</style>
-<?php 
-endif; }
-
-if ( get_theme_mod( 'fourteenxt_fullwidth_searches' ) != 0 ) {
-if ( is_search() ) : 
-    ?>
-	<style>
-	    .content-sidebar { display: none;}
-	    .full-width .post-thumbnail img {
-	        width: 100%;
-        }
-	</style>
-<?php 
-endif; }
 
 if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) { 
 ?>

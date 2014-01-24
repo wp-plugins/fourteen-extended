@@ -203,6 +203,21 @@ function fourteenxt_customize_register( $wp_customize ) {
     );
 	
 	$wp_customize->add_setting(
+    'fourteenxt_no_featured_image_offset',
+    array(
+        'default' => '28',
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_no_featured_image_offset',
+    array(
+        'label' => __('Top offset for posts with no featured image - default is 28','fourteenxt'),
+        'section' => 'fourteenxt_content_options',
+		'priority' => 6,
+        'type' => 'text',
+    ));
+	
+	$wp_customize->add_setting(
     'fourteenxt_content_off_featured_image',
     array(
         'default' => '',
@@ -213,7 +228,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Enter 1 or more for padding to move content off featured image (numbers only!) - default is -48','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 6,
+		'priority' => 7,
         'type' => 'text',
     ));
 	
@@ -228,7 +243,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474. Set to 700 when hiding left sidebar only!','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 7,
+		'priority' => 8,
         'type' => 'text',
     ));
 	
@@ -251,7 +266,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'settings' => 'fourteenxt_feed_cat',
 		'label'   => __('Select Blog Feed Category:', 'fourteenxt'),
 		'section'  => 'fourteenxt_content_options',
-		'priority' => 8,
+		'priority' => 9,
 		'type'    => 'select',
 		'choices' => $cats,
 	));
@@ -266,7 +281,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Switch blog feed to show excerpts?', 'fourteenxt'),
         'section'  => 'fourteenxt_content_options',
-		'priority' => 9,
+		'priority' => 10,
         )
     );
 	
@@ -281,7 +296,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Enter desired home excerpt length (numbers only!) - default is 55.','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 10,
+		'priority' => 11,
         'type' => 'text',
     ));
 	
@@ -295,7 +310,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Check to remove widget title top border', 'fourteenxt'),
         'section'  => 'fourteenxt_content_options',
-		'priority' => 11,
+		'priority' => 12,
         )
     );
 	
