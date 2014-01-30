@@ -5,7 +5,7 @@ Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.1.8
+Version:     1.1.9
 License:     GPL
 */
 
@@ -29,7 +29,6 @@ add_action( 'plugins_loaded', 'fourteenxt_extended_load_textdomain' );
 
 // Customizer Moved to inc folder - since v1.0.9
 require_once('inc/fourteenxt-customizer.php'); // Include Extended Customizer
-
 
 function fourteenxt_blog_feed_cat( $query ) {
     if ( is_admin() || ! $query->is_main_query() )
@@ -268,3 +267,11 @@ global $content_width;
 	return $classes;
 }
 add_filter( 'body_class', 'fourteenxt_body_classes' );
+
+if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) { 
+function fourteenxt_remove_widgets(){
+	// Remove Primary sidebar from widget area.
+	unregister_sidebar( 'sidebar-1' );
+}
+add_action( 'widgets_init', 'fourteenxt_remove_widgets', 11 );
+}

@@ -66,7 +66,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 2,
         'type' => 'text',
     ));
-		
+			
 	// Primary position switch - float it to the left.
 	$wp_customize->add_setting( 'fourteenxt_primary_menu_float', array(
 		'default' => 'right',
@@ -218,6 +218,35 @@ function fourteenxt_customize_register( $wp_customize ) {
     ));
 	
 	$wp_customize->add_setting(
+        'fourteenxt_home_content_separator'
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_home_content_separator',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Remove the content separator?', 'fourteenxt'),
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 7,
+        )
+    );
+	
+	$wp_customize->add_setting(
+    'fourteenxt_content_separator_op',
+    array(
+        'default' => '0.1',
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_content_separator_op',
+    array(
+        'label' => __('Content separator line opacity - default is 0.1','fourteenxt'),
+        'section' => 'fourteenxt_content_options',
+		'priority' => 8,
+        'type' => 'text',
+    ));
+	
+	$wp_customize->add_setting(
     'fourteenxt_content_off_featured_image',
     array(
         'default' => '',
@@ -228,7 +257,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Enter 1 or more for padding to move content off featured image (numbers only!) - default is -48','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 7,
+		'priority' => 9,
         'type' => 'text',
     ));
 	
@@ -243,7 +272,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Content max-width (numbers only!) - maximum recommended is 874 & Default is 474. Set to 700 when hiding left sidebar only!','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 8,
+		'priority' => 10,
         'type' => 'text',
     ));
 	
@@ -266,7 +295,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'settings' => 'fourteenxt_feed_cat',
 		'label'   => __('Select Blog Feed Category:', 'fourteenxt'),
 		'section'  => 'fourteenxt_content_options',
-		'priority' => 9,
+		'priority' => 11,
 		'type'    => 'select',
 		'choices' => $cats,
 	));
@@ -281,7 +310,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Switch blog feed to show excerpts?', 'fourteenxt'),
         'section'  => 'fourteenxt_content_options',
-		'priority' => 10,
+		'priority' => 12,
         )
     );
 	
@@ -296,7 +325,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Enter desired home excerpt length (numbers only!) - default is 55.','fourteenxt'),
         'section' => 'fourteenxt_content_options',
-		'priority' => 11,
+		'priority' => 13,
         'type' => 'text',
     ));
 	
@@ -310,7 +339,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Check to remove widget title top border', 'fourteenxt'),
         'section'  => 'fourteenxt_content_options',
-		'priority' => 12,
+		'priority' => 14,
         )
     );
 	
