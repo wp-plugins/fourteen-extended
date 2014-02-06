@@ -177,6 +177,4 @@ You can use Fourteen Extended with both the default Twenty Fourteen and its chil
 * Initial release
 
 == TODO List ==
-1 - Add FitVids script for better video embed handling across multiple media devices.
-
-2 - Any other suggestions and requests.
+1 - Add options to change grid/slider number of posts plus option to change grid between 3 and 4 columns
