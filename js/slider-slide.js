@@ -8,6 +8,7 @@
 				selector: '.featured-content-inner > article',
 				controlsContainer: '.featured-content',
 				slideshow: true,
+				pauseOnHover: true,
 				animation: 'slide',
 				slideshowSpeed: 5000,
 				namespace: 'slider-',

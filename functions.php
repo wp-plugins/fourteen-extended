@@ -2,10 +2,10 @@
 /*
 Plugin Name: Fourteen Extended
 Plugin URI:  http://wpdefault.com/fourteen-extended/
-Description: A functionality plugin for extending the Twenty Fourteen theme.
+Description: A functionality plugin for extending the Twenty Fourteen theme without touching code.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.1.9
+Version:     1.2.0
 License:     GPL
 */
 
@@ -137,6 +137,28 @@ endif;
 add_action( 'wp_enqueue_scripts' , 'fourteenxt_featured_content_scripts' , 210 );
 }
 
+/*  IE js header
+/* ------------------------------------ */
+if ( get_theme_mod( 'fourteenxt_load_selectivizr' ) != 0 ) {
+function fourteenxt_ie_support_header() {
+    echo '<!--[if (gte IE 6)&(lte IE 8)]>'. "\n";
+    echo '<script src="' . esc_url( plugin_dir_url( __FILE__ ) . 'js/selectivizr.js' ) . '"></script>'. "\n";
+	echo '<noscript><link rel="stylesheet" href="[fallback css]" /></noscript>'. "\n";
+    echo '<![endif]-->'. "\n";
+}
+add_action( 'wp_head', 'fourteenxt_ie_support_header' );
+}
+
+/*  IE js footer
+/* ------------------------------------ */
+if ( get_theme_mod( 'fourteenxt_load_respond' ) != 0 ) {
+function fourteenxt_ie_support_footer() {
+    echo '<!--[if lt IE 9]>'. "\n";
+    echo '<script src="' . esc_url( plugin_dir_url( __FILE__ ) . 'js/respond.min.js' ) . '"></script>'. "\n";
+    echo '<![endif]-->'. "\n";
+}
+add_action( 'wp_footer', 'fourteenxt_ie_support_footer', 20 );
+}
 
 /**
  * Loads the fitvids plugin.
@@ -149,8 +171,8 @@ if ( get_theme_mod( 'fourteenxt_fitvids_enable' ) != 0 ) {
 
 function fourteenxt_fitvids_scripts() {
    	// add fitvids
-	wp_register_script( 'fourteenxt_fitvids',plugin_dir_url( __FILE__ ).'js/jquery.fitvids.js','extended-fitvids', array( 'jquery' ), true );
-    wp_enqueue_script( 'fourteenxt_fitvids' );
+	wp_register_script( 'jquery-fitvids',plugin_dir_url( __FILE__ ).'js/jquery.fitvids.js','extended-fitvids', array( 'jquery' ), true );
+    wp_enqueue_script( 'jquery-fitvids' );
 	
 } // end fitvids_scripts
 add_action('wp_enqueue_scripts','fourteenxt_fitvids_scripts', 210);
@@ -167,9 +189,11 @@ add_action( 'wp_footer', 'fourteenxt_fitthem', 220 );
 } // End FitVids enable
 
 // Styles Moved to inc folder - since v1.0.9
-require_once('inc/fourteenxt-styles.php'); // Include Extended Styles
+if ( get_theme_mod( 'fourteenxt_disable_style_output' ) != 1 ) {
+   require_once('inc/fourteenxt-styles.php'); // Include Extended Styles
+}
 
-if ( get_theme_mod( 'fourteenxt_featured_visibility' ) != 0 ) {
+if ( get_theme_mod( 'fourteenxt_featured_visibility' ) != 0 ||  get_theme_mod( 'fourteenxt_featured_remove' ) != 0 ) {
 	function fourteenxt_remove_pre_get_posts() {
 	    remove_action( 'pre_get_posts', array( 'Featured_Content', 'pre_get_posts' ) );
     }

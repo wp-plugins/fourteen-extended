@@ -4,7 +4,7 @@ function fourteenxt_general_css(){
 
 if ( get_theme_mod( 'fourteenxt_primary_menu_float' ) ) {
     $primary_menu_float = get_theme_mod( 'fourteenxt_primary_menu_float' );
-	$max_site_width     = get_theme_mod( 'fourteenxt_maximum_site_width' );
+	$max_site_width     = esc_html(get_theme_mod( 'fourteenxt_maximum_site_width' ));
 	// Apply custom settings to appropriate element ?>
     <style>@media screen and (min-width: 783px){.primary-navigation{float: <?php echo $primary_menu_float; ?>;margin-left: 20px;}}</style>
 <?php }
@@ -91,12 +91,26 @@ if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) {
 
 if ( get_theme_mod( 'fourteenxt_overall_content_width' ) ) { 
 $overall_conten_width  = esc_html( get_theme_mod( 'fourteenxt_overall_content_width' ));
-$overall_image_height  = esc_html( get_theme_mod( 'fourteenxt_overall_image_height' ));  
- ?>
-    <style>.hentry{max-width: <?php echo $overall_conten_width; ?>px;}.site-content .post-thumbnail img{max-width: <?php echo $overall_conten_width; ?>px;width: 100%;}
-		   .post-thumbnail{background:none;}a.post-thumbnail:hover{background-color:transparent;}img.size-full,img.size-large,.wp-post-image,.post-thumbnail img{max-height: <?php echo $overall_image_height; ?>px;max-width:100%;}
+$overall_image_height  = esc_html( get_theme_mod( 'fourteenxt_overall_image_height' ));
+?>
+    <style>.hentry{max-width: <?php echo $overall_conten_width; ?>px;}
+	    img.size-full,img.size-large,.wp-post-image,.post-thumbnail img,.site-content .post-thumbnail img{max-height: <?php echo $overall_image_height; ?>px;}
 	</style>
+	
 <?php }
+
+if ( get_theme_mod( 'fourteenxt_enable_image_width' ) != 0 ) : ?>
+    <style>
+	     .post-thumbnail{background:none;}a.post-thumbnail:hover{background-color:transparent;}
+		 img.size-full,img.size-large,.wp-post-image,.post-thumbnail img,.site-content .post-thumbnail img{width:100%;}
+	</style>
+<?php endif;
+
+if ( get_theme_mod( 'fourteenxt_remove_image_bg' ) != 0 ) : ?>
+    <style>
+	     .site-content .post-thumbnail{background:none;}.site-content a.post-thumbnail:hover{background-color:transparent;}
+	</style>
+<?php endif;
 
 if ( get_theme_mod( 'fourteenxt_slider_width' ) ) { 
 $overall_slider_width  = esc_html( get_theme_mod( 'fourteenxt_slider_width' ));
@@ -106,17 +120,21 @@ $slider_margin_top     = esc_html( get_theme_mod( 'fourteenxt_slider_topmargin' 
     <style>
 		.slider .featured-content .hentry{max-height: <?php echo $overall_slider_height; ?>px;}.slider .featured-content{max-width: <?php echo $overall_slider_width; ?>px;
 		margin: <?php echo $slider_margin_top; ?>px auto;}.slider .featured-content .post-thumbnail img{max-width: <?php echo $overall_slider_width; ?>px;width: 100%;}
-		.post-thumbnail{background:none;}a.post-thumbnail:hover{background-color:transparent;}
+		.slider .featured-content .post-thumbnail{background:none;}.slider .featured-content a.post-thumbnail:hover{background-color:transparent;}
 	</style>
 <?php
 if ( get_theme_mod( 'fourteenxt_featured_bg_visibility' ) != 0 ) { ?>
     <style>.featured-content{background:none;}</style>
 <?php } }
 
+if ( get_theme_mod( 'fourteenxt_featured_remove' ) != 0 ) { ?>
+    <style>.featured-content{display:none;}</style>
+<?php }
+
 if ( get_theme_mod( 'fourteenxt_home_content_separator' ) != 1 ) {
 $separator_opacity = esc_html( get_theme_mod( 'fourteenxt_content_separator_op' ));
 if ( is_home() ) : ?>
-    <style>.site-content .hentry{border-top: 1px solid rgba(0, 0, 0, <?php echo $separator_opacity; ?>);padding-top: 48px;}
+    <style>.site-content .hentry{border-top: 1px solid rgba(0, 0, 0, <?php echo $separator_opacity; ?>);}
 	.site-content .hentry:first-child{border-top: 0;}</style>
 <?php endif; }
 }

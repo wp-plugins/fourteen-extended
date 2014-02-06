@@ -1,9 +1,9 @@
 === Fourteen Extended ===
-Contributors: ZGani - AKA Zulfikar Nore
+Contributors: Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
 Tested up to: 3.9-alpha
-Stable tag: 1.1.9
+Stable tag: 1.2.0
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
@@ -50,7 +50,7 @@ Current options are:
 
 Now with complete width control - go full screen at 3200px or go boxed down to 940px. Unlimited width control!
 
-* And more to come...
+* Plus many more inside...
 
 Fourteen Extended will help you center align your entire site, set your blog feed to the glorious Twenty Fourteen full width look plus an option to set the single posts to full width too! Please report any issues on the support forums.
 
@@ -78,6 +78,15 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+
+= 1.2.0 =
+* NEW: Added option to remove the featured content altogether from front end as well as the customizer section.
+* Moved the option to show featured content in the blog feed to the TwentyFourteen Content Options section where it makes more sense.
+* NEW: Added Option to include (optional) Selectivizr and Respond javascripts for better IE support.
+* NEW: Beefed up security check on data input.
+* NEW: Added pause on hover effect to slider.
+* NEW: Added check box to enable image resize to 100% width.
+* NEW: Added separate check box for removing the post thumbnail background image/color.
 
 = 1.1.9 =
 * Added support for IE8 on left sidebar visibility

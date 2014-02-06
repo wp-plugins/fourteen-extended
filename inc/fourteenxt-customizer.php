@@ -7,28 +7,40 @@
  */
 function fourteenxt_customize_register( $wp_customize ) {
 
-    $wp_customize->add_section( 'fourteenxt_general_options' , array(
+    $wp_customize->add_section( 'fourteenxt_control_options' , array(
+       'title'      => __('TwentyFourteen Start Here','fourteenxt'),
+	   'description' => sprintf( __( 'Welcome and thank you for using Fourteen Extended plugin.<br/><br/> The purpose of this plugin is to help you customizer your Twenty Fourteen run website with ease while still giving you much of the control.<br/><br/> Not every option is suitable or required for/by everyone hence why there multiple sections to separate the controls.<br/><br/> Your first control is below and it allows you to disable the CSS output of the plugin without deactivating it while still remaining in the Customizer section adjusting other settings or debugging issues!', 'fourteenxt' )),
+       'priority'   => 30,
+    ) );
+	
+	$wp_customize->add_section( 'fourteenxt_general_options' , array(
        'title'      => __('TwentyFourteen General Options','fourteenxt'),
 	   'description' => sprintf( __( 'Use the following settings to set general theme options. Current options are: Center the site, Set Blog feed to full width, Set single post to full width, set content max-width and move content to below the featured image with more to come!', 'fourteenxt' )),
-       'priority'   => 30,
+       'priority'   => 31,
     ) );
 	
 	$wp_customize->add_section( 'fourteenxt_content_options' , array(
        'title'      => __('TwentyFourteen Content Options','fourteenxt'),
 	   'description' => sprintf( __( 'Use the following settings to set content options. A screen refresh may be required to see some of the changes in the customizer!', 'fourteenxt' )),
-       'priority'   => 31,
+       'priority'   => 32,
     ) );
 	
 	$wp_customize->add_section( 'fourteenxt_fitvids_options' , array(
        'title'      => __('TwentyFourteen FitVids Options','fourteenxt'),
 	   'description' => sprintf( __( 'Use the following settings to set fitvids script options. Options are: Enable script, Set selector (Default is .post) and set custom selector (optional) for other areas like .sidebar or a custom section!', 'fourteenxt' )),
-       'priority'   => 32,
+       'priority'   => 33,
     ) );
 	
 	$wp_customize->add_section( 'fourteenxt_mobile_options' , array(
        'title'      => __('TwentyFourteen Mobile Options','fourteenxt'),
 	   'description' => sprintf( __( 'Use the following settings to set mobile options. Options are: Show full content on home page on mobile instead of list view. Featured content mobile layout - grid or slider. Please note that the mobile layout will only work if the device is a mobile therefore minimizing the desktop window will have no effect and will show the default layout set in the featured section.', 'fourteenxt' )),
-       'priority'   => 33,
+       'priority'   => 34,
+    ) );
+	
+	$wp_customize->add_section( 'fourteenxt_scripts_options' , array(
+       'title'      => __('TwentyFourteen Optional Scripts','fourteenxt'),
+	   'description' => sprintf( __( 'Use the following settings to load scripts. Only use these when needed i.e for IE8 support.', 'fourteenxt' )),
+       'priority'   => 35,
     ) );
 	
 	$wp_customize->add_section( 'fourteenxt_slider_options' , array(
@@ -37,9 +49,28 @@ function fourteenxt_customize_register( $wp_customize ) {
        'priority'   => 131,
     ) );
 	
+	// Plugin Control - Enable/Disable
+	$wp_customize->add_setting(
+        'fourteenxt_disable_style_output', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_disable_style_output',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Disable the plugin css output for debugging?', 'fourteenxt'),
+        'section'  => 'fourteenxt_control_options',
+  		'priority' => 1,
+        )
+    );
+	
 	// Lets center the site shall we
     $wp_customize->add_setting(
-        'fourteenxt_center_site'
+        'fourteenxt_center_site', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -53,9 +84,26 @@ function fourteenxt_customize_register( $wp_customize ) {
     );
 	
 	$wp_customize->add_setting(
+        'fourteenxt_featured_remove', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_featured_remove',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Remove the featured content section?', 'fourteenxt'),
+        'section'  => 'fourteenxt_general_options',
+		'priority' => 2,
+        )
+    );
+	
+	$wp_customize->add_setting(
     'fourteenxt_maximum_site_width',
     array(
         'default' => '1260',
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -63,7 +111,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Overall Site max-width (numbers only!) - Default is 1260.','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 2,
+		'priority' => 3,
         'type' => 'text',
     ));
 			
@@ -75,7 +123,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	$wp_customize->add_control( 'fourteenxt_primary_menu_float', array(
     'label'   => __( 'Float Primary Menu to the left?', 'fourteenxt' ),
     'section' => 'fourteenxt_general_options',
-	'priority' => 3,
+	'priority' => 4,
     'type'    => 'radio',
         'choices' => array(
             'right' => __( 'Default - Right', 'fourteenxt' ),
@@ -85,7 +133,9 @@ function fourteenxt_customize_register( $wp_customize ) {
 	
 	// Lets center the site shall we
     $wp_customize->add_setting(
-        'fourteenxt_hide_left_sidebar'
+        'fourteenxt_hide_left_sidebar', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -94,7 +144,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Remove Left Sidebar? - Hide left sidebar sitewide', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
-		'priority' => 4,
+		'priority' => 5,
         )
     );
 	
@@ -102,6 +152,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_overall_content_width',
     array(
         'default' => '1038',
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -109,14 +160,15 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Overall Content (hentry) max-width (numbers only!) - maximum recommended is 1260 & Default is 1038.','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 5,
+		'priority' => 6,
         'type' => 'text',
     ));
-	
+		
 	$wp_customize->add_setting(
     'fourteenxt_overall_image_height',
     array(
         'default' => '572',
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -124,13 +176,47 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Overall Content Image max-height (numbers only!) - maximum recommended is 572.','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 6,
+		'priority' => 7,
         'type' => 'text',
     ));
 	
+	$wp_customize->add_setting(
+        'fourteenxt_enable_image_width', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_enable_image_width',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Make post featured images span 100% width?', 'fourteenxt'),
+        'section'  => 'fourteenxt_general_options',
+		'priority' => 7,
+        )
+    );
+	
+	$wp_customize->add_setting(
+        'fourteenxt_remove_image_bg', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_remove_image_bg',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Remove background image and color?', 'fourteenxt'),
+        'section'  => 'fourteenxt_general_options',
+		'priority' => 8,
+        )
+    );
+	
 	// Set Blog feed to full width i.e. hide the content sidebar.
 	$wp_customize->add_setting(
-        'fourteenxt_fullwidth_blog_feed'
+        'fourteenxt_fullwidth_blog_feed', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -145,7 +231,9 @@ function fourteenxt_customize_register( $wp_customize ) {
 	
 	// Set Single to full width i.e. hide the content sidebar.
 	$wp_customize->add_setting(
-        'fourteenxt_fullwidth_single_post'
+        'fourteenxt_fullwidth_single_post', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -160,7 +248,9 @@ function fourteenxt_customize_register( $wp_customize ) {
 	
 	// Set Archives to full width i.e. hide the content sidebar.
 	$wp_customize->add_setting(
-        'fourteenxt_fullwidth_archives'
+        'fourteenxt_fullwidth_archives', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -175,7 +265,9 @@ function fourteenxt_customize_register( $wp_customize ) {
 	
 	// Set Searches to full width i.e. hide the content sidebar.
 	$wp_customize->add_setting(
-        'fourteenxt_fullwidth_searches'
+        'fourteenxt_fullwidth_searches', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -189,7 +281,9 @@ function fourteenxt_customize_register( $wp_customize ) {
     );
 	
 	$wp_customize->add_setting(
-        'fourteenxt_content_top_padding'
+        'fourteenxt_content_top_padding', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -206,6 +300,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_no_featured_image_offset',
     array(
         'default' => '28',
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -218,7 +313,9 @@ function fourteenxt_customize_register( $wp_customize ) {
     ));
 	
 	$wp_customize->add_setting(
-        'fourteenxt_home_content_separator'
+        'fourteenxt_home_content_separator', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -235,6 +332,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_content_separator_op',
     array(
         'default' => '0.1',
+		'sanitize_callback' => 'sanitize_text_field'
     ));
 	
 	$wp_customize->add_control(
@@ -250,6 +348,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_content_off_featured_image',
     array(
         'default' => '',
+		'sanitize_callback' => 'sanitize_text_field'
     ));
 	
 	$wp_customize->add_control(
@@ -265,6 +364,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_content_width_adjustment',
     array(
         'default' => '474',
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -318,6 +418,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_excerpt_length',
     array(
         'default' => 55,
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -329,8 +430,29 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type' => 'text',
     ));
 	
+	// Add option to Featured tab to show featured content in blog feed
+	if ( get_theme_mod( 'fourteenxt_featured_remove' ) != 1 ) { 
 	$wp_customize->add_setting(
-        'fourteenxt_sidebar_top_border'
+        'fourteenxt_featured_visibility', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_featured_visibility',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Show Featured Posts in blog feed?', 'fourteenxt'),
+        'section'  => 'fourteenxt_content_options',
+		'priority' => 14,
+        )
+    );
+	}
+	
+	$wp_customize->add_setting(
+        'fourteenxt_sidebar_top_border', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -339,13 +461,15 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Check to remove widget title top border', 'fourteenxt'),
         'section'  => 'fourteenxt_content_options',
-		'priority' => 14,
+		'priority' => 15,
         )
     );
 	
 	// Add FitVids to site
     $wp_customize->add_setting(
-        'fourteenxt_fitvids_enable'
+        'fourteenxt_fitvids_enable', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -362,6 +486,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_fitvids_selector',
     array(
         'default' => '.post',
+		'sanitize_callback' => 'sanitize_text_field'
     ));
 	
 	$wp_customize->add_control(
@@ -377,6 +502,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_fitvids_custom_selector',
     array(
         'default' => '',
+		'sanitize_callback' => 'sanitize_text_field'
     ));
 	
 	$wp_customize->add_control(
@@ -390,7 +516,9 @@ function fourteenxt_customize_register( $wp_customize ) {
 	
 	// Mobile View Options
     $wp_customize->add_setting(
-        'fourteenxt_body_class_filters'
+        'fourteenxt_body_class_filters', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -406,7 +534,8 @@ function fourteenxt_customize_register( $wp_customize ) {
 	$wp_customize->add_setting( 
 	    'fourteenxt_layout_mobile', 
 	    array( 
-	        'default' => 'grid' 
+	        'default' => 'grid',
+            'sanitize_callback' => 'fourteenxt_sanitize_mobile_layout',			
 	    )
 	);
 
@@ -423,25 +552,12 @@ function fourteenxt_customize_register( $wp_customize ) {
             ),
         ) 
 	);
-	
-	// Add option to Featured tab to show featured content in blog feed
-	$wp_customize->add_setting(
-        'fourteenxt_featured_visibility'
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_featured_visibility',
-    array(
-        'type'     => 'checkbox',
-        'label'    => __('Show Featured Posts in blog feed?', 'fourteenxt'),
-        'section'  => 'featured_content',
-		'priority' => 31,
-        )
-    );
-	
+		
 	// Begin Slider Options
 	$wp_customize->add_setting(
-        'fourteenxt_enable_autoslide'
+        'fourteenxt_enable_autoslide', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -474,6 +590,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_slider_width',
     array(
         'default' => '1600',
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -489,6 +606,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_slider_height',
     array(
         'default' => '500',
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -504,6 +622,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     'fourteenxt_slider_topmargin',
     array(
         'default' => '0',
+		'sanitize_callback' => 'absint'
     ));
 	
 	$wp_customize->add_control(
@@ -516,7 +635,9 @@ function fourteenxt_customize_register( $wp_customize ) {
     ));
 	
 	$wp_customize->add_setting(
-        'fourteenxt_featured_bg_visibility'
+        'fourteenxt_featured_bg_visibility', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
     );
 
     $wp_customize->add_control(
@@ -528,7 +649,40 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 6,
         )
     );
+	
+	// Begin Optional Scripts options
+	$wp_customize->add_setting(
+        'fourteenxt_load_selectivizr', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
 
+    $wp_customize->add_control(
+        'fourteenxt_load_selectivizr',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Load Selectivizr.js script?', 'fourteenxt'),
+        'section'  => 'fourteenxt_scripts_options',
+		'priority' => 1,
+        )
+    );
+	
+	$wp_customize->add_setting(
+        'fourteenxt_load_respond', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_load_respond',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Load Respond.js script?', 'fourteenxt'),
+        'section'  => 'fourteenxt_scripts_options',
+		'priority' => 2,
+        )
+    );
+	
 }
 add_action( 'customize_register', 'fourteenxt_customize_register' );
 
@@ -541,6 +695,37 @@ return get_theme_mod( 'fourteenxt_layout_mobile', 'grid' );
 return $value;
 }
 }
-
 add_filter( 'theme_mod_featured_content_layout', 'fourteenxt_mobile_layout' );
 
+function fourteenxt_sanitize_mobile_layout( $layout ) {
+	if ( ! in_array( $layout, array( 'grid', 'slider' ) ) ) {
+		$layout = 'grid';
+	}
+	return $layout;
+}
+
+/**
+ * Sanitize checkbox
+ */
+if ( ! function_exists( 'fourteenxt_sanitize_checkbox' ) ) :
+	function fourteenxt_sanitize_checkbox( $input ) {
+		if ( $input == 1 ) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+endif;
+
+// So we don't want the featured section at all - OK, lets remove it!
+if ( get_theme_mod( 'fourteenxt_featured_remove' ) != 0 ) { 
+function fourteenxt_remove_featured_sections(){
+    global $wp_customize;
+
+    $wp_customize->remove_section('featured_content');
+	$wp_customize->remove_section('fourteenxt_slider_options');
+}
+
+// Priority 20 so that we remove options only once they've been added
+add_action( 'customize_register', 'fourteenxt_remove_featured_sections', 20 );
+}
