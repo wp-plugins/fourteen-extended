@@ -42,13 +42,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	   'description' => sprintf( __( 'Use the following settings to load scripts. Only use these when needed i.e for IE8 support.', 'fourteenxt' )),
        'priority'   => 35,
     ) );
-	
-	$wp_customize->add_section( 'fourteenxt_slider_options' , array(
-       'title'      => __('Featured Slider Options','fourteenxt'),
-	   'description' => sprintf( __( 'Use the following settings to set slider options. Use wisely - in most cases it is best to leave the width setting as is! Only check the "Remove featured background" box if you have reduced the width setting', 'fourteenxt' )),
-       'priority'   => 131,
-    ) );
-	
+		
 	// Plugin Control - Enable/Disable
 	$wp_customize->add_setting(
         'fourteenxt_disable_style_output', array (
@@ -118,6 +112,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	// Primary position switch - float it to the left.
 	$wp_customize->add_setting( 'fourteenxt_primary_menu_float', array(
 		'default' => 'right',
+		'sanitize_callback' => 'fourteenxt_sanitize_menu_float'
 	) );
 	
 	$wp_customize->add_control( 'fourteenxt_primary_menu_float', array(
@@ -192,7 +187,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Make post featured images span 100% width?', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
-		'priority' => 7,
+		'priority' => 8,
         )
     );
 	
@@ -208,7 +203,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Remove background image and color?', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
-		'priority' => 8,
+		'priority' => 9,
         )
     );
 	
@@ -553,103 +548,6 @@ function fourteenxt_customize_register( $wp_customize ) {
         ) 
 	);
 		
-	// Begin Slider Options
-	$wp_customize->add_setting(
-        'fourteenxt_enable_autoslide', array (
-			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
-		)
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_enable_autoslide',
-    array(
-        'type'     => 'checkbox',
-        'label'    => __('Check to set Slider to Auto Fade/Slide', 'fourteenxt'),
-        'section'  => 'fourteenxt_slider_options',
-		'priority' => 1,
-        )
-    );
-	
-	$wp_customize->add_setting( 'fourteenxt_slider_transition', array(
-		'default' => 'slide',
-	) );
-
-	
-	$wp_customize->add_control( 'fourteenxt_slider_transition', array(
-    'label'   => __( 'Slider Transition', 'fourteenxt' ),
-    'section' => 'fourteenxt_slider_options',
-	'priority' => 2,
-    'type'    => 'radio',
-        'choices' => array(
-            'slide' => __( 'Slide', 'fourteenxt' ),
-            'fade' => __( 'Fade', 'fourteenxt' ),
-        ),
-    ));
-	
-	$wp_customize->add_setting(
-    'fourteenxt_slider_width',
-    array(
-        'default' => '1600',
-		'sanitize_callback' => 'absint'
-    ));
-	
-	$wp_customize->add_control(
-    'fourteenxt_slider_width',
-    array(
-        'label' => __('Set Slider max-width (numbers only!) - Default is 1600.','fourteenxt'),
-        'section' => 'fourteenxt_slider_options',
-		'priority' => 3,
-        'type' => 'text',
-    ));
-	
-	$wp_customize->add_setting(
-    'fourteenxt_slider_height',
-    array(
-        'default' => '500',
-		'sanitize_callback' => 'absint'
-    ));
-	
-	$wp_customize->add_control(
-    'fourteenxt_slider_height',
-    array(
-        'label' => __('Set Slider max-height (numbers only!) - Default is 500!','fourteenxt'),
-        'section' => 'fourteenxt_slider_options',
-		'priority' => 4,
-        'type' => 'text',
-    ));
-	
-	$wp_customize->add_setting(
-    'fourteenxt_slider_topmargin',
-    array(
-        'default' => '0',
-		'sanitize_callback' => 'absint'
-    ));
-	
-	$wp_customize->add_control(
-    'fourteenxt_slider_topmargin',
-    array(
-        'label' => __('Set Slider Top Margin (numbers only!) - Default is 0!','fourteenxt'),
-        'section' => 'fourteenxt_slider_options',
-		'priority' => 5,
-        'type' => 'text',
-    ));
-	
-	$wp_customize->add_setting(
-        'fourteenxt_featured_bg_visibility', array (
-			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
-		)
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_featured_bg_visibility',
-    array(
-        'type'     => 'checkbox',
-        'label'    => __('Remove the featured background?', 'fourteenxt'),
-        'section'  => 'fourteenxt_slider_options',
-		'priority' => 6,
-        )
-    );
-	
 	// Begin Optional Scripts options
 	$wp_customize->add_setting(
         'fourteenxt_load_selectivizr', array (
@@ -682,10 +580,35 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 2,
         )
     );
-	
 }
 add_action( 'customize_register', 'fourteenxt_customize_register' );
 
+if ( version_compare( $GLOBALS['wp_version'], '3.9', '<' ) ) {
+// For Test purposes only & add support for wp_is_mobile workaround - not required for WP 3.9
+if ( ! function_exists( 'wp_is_mobile' ) ) :
+function wp_is_mobile() {
+	static $is_mobile;
+
+	if ( isset($is_mobile) )
+		return $is_mobile;
+
+	if ( empty($_SERVER['HTTP_USER_AGENT']) ) {
+		$is_mobile = false;
+	} elseif ( strpos($_SERVER['HTTP_USER_AGENT'], 'Mobile') !== false // many mobile devices (all iPhone, iPad, etc.)
+		|| strpos($_SERVER['HTTP_USER_AGENT'], 'Android') !== false
+		|| strpos($_SERVER['HTTP_USER_AGENT'], 'Silk/') !== false
+		|| strpos($_SERVER['HTTP_USER_AGENT'], 'Kindle') !== false
+		|| strpos($_SERVER['HTTP_USER_AGENT'], 'BlackBerry') !== false
+		|| strpos($_SERVER['HTTP_USER_AGENT'], 'Opera Mini') !== false
+		|| strpos($_SERVER['HTTP_USER_AGENT'], 'Opera Mobi') !== false ) {
+			$is_mobile = true;
+	} else {
+		$is_mobile = false;
+	}
+	return $is_mobile;
+}
+endif;
+}
 
 function fourteenxt_mobile_layout( $value ) {
 
@@ -705,6 +628,18 @@ function fourteenxt_sanitize_mobile_layout( $layout ) {
 }
 
 /**
+ * Sanitize primary menu float radio select
+ */
+ if ( ! function_exists( 'fourteenxt_sanitize_menu_float' ) ) :
+function fourteenxt_sanitize_menu_float( $float ) {
+	if ( ! in_array( $float, array( 'right', 'left' ) ) ) {
+		$float = 'right';
+	}
+	return $float;
+}
+endif;
+
+/**
  * Sanitize checkbox
  */
 if ( ! function_exists( 'fourteenxt_sanitize_checkbox' ) ) :
@@ -715,6 +650,18 @@ if ( ! function_exists( 'fourteenxt_sanitize_checkbox' ) ) :
 			return 0;
 		}
 	}
+endif;
+
+/**
+ * Sanitize slider transition radio select
+ */
+ if ( ! function_exists( 'fourteenxt_sanitize_transition' ) ) :
+function fourteenxt_sanitize_transition( $transition ) {
+	if ( ! in_array( $transition, array( 'slide', 'fade' ) ) ) {
+		$transition = 'slide';
+	}
+	return $transition;
+}
 endif;
 
 // So we don't want the featured section at all - OK, lets remove it!

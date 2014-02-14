@@ -6,7 +6,7 @@ if ( get_theme_mod( 'fourteenxt_primary_menu_float' ) ) {
     $primary_menu_float = get_theme_mod( 'fourteenxt_primary_menu_float' );
 	$max_site_width     = esc_html(get_theme_mod( 'fourteenxt_maximum_site_width' ));
 	// Apply custom settings to appropriate element ?>
-    <style>@media screen and (min-width: 783px){.primary-navigation{float: <?php echo $primary_menu_float; ?>;margin-left: 20px;}}</style>
+    <style>@media screen and (min-width: 783px){.primary-navigation{float: <?php echo $primary_menu_float; ?>;margin-left: 20px;}a { transition: all .5s ease; }}</style>
 <?php }
 
 if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
@@ -15,6 +15,28 @@ if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
 		@media screen and (min-width: 1110px) {.archive-header,.comments-area,.image-navigation,.page-header,.page-content,.post-navigation,.site-content .entry-header,
 	    .site-content .entry-content,.site-content .entry-summary,.site-content footer.entry-meta{padding-left: 55px;}}</style>
 <?php }
+
+if ( get_post_meta(get_the_ID(), '_fourteenxt_true_fullwidth', true )) {
+if ( is_page_template( 'page-templates/full-width.php' )) :
+?>
+<style>
+.full-width .archive-header,
+.full-width .comments-area,
+.full-width .image-navigation,
+.full-width .page-header,
+.full-width .page-content,
+.full-width .post-navigation,
+.full-width .site-content .entry-header,
+.full-width .site-content .entry-content,
+.full-width .site-content .entry-summary,
+.full-width .site-content footer.entry-meta {
+	max-width: 1200px;
+	width: 100%;
+}
+.site:before,#secondary{width:0;display:none;}.ie8 .site:before,.ie8 #secondary{width:0px;display:none;}.featured-content{padding-left:0;}.site-content,.site-main .widecolumn{margin-left:0;}.ie8 .site-content,.ie8 .site-main .widecolumn{margin-left:0;}
+@media screen and (min-width: 1008px) {.search-box-wrapper{padding-left:0;}}@media screen and (min-width: 1080px) {.search-box-wrapper,.featured-content{padding-left:0;}}
+</style>
+<?php endif; }
 
 }
 add_action( 'wp_head', 'fourteenxt_general_css' );
@@ -101,8 +123,8 @@ $overall_image_height  = esc_html( get_theme_mod( 'fourteenxt_overall_image_heig
 
 if ( get_theme_mod( 'fourteenxt_enable_image_width' ) != 0 ) : ?>
     <style>
-	     .post-thumbnail{background:none;}a.post-thumbnail:hover{background-color:transparent;}
-		 img.size-full,img.size-large,.wp-post-image,.post-thumbnail img,.site-content .post-thumbnail img{width:100%;}
+	    .site-content .post-thumbnail{background:none;}.site-content a.post-thumbnail:hover{background-color:transparent;}
+		.site-content img.size-full,.site-content img.size-large,.site-content .wp-post-image,.site-content .post-thumbnail img,.site-content .post-thumbnail img{width:100%;}
 	</style>
 <?php endif;
 
@@ -127,8 +149,25 @@ if ( get_theme_mod( 'fourteenxt_featured_bg_visibility' ) != 0 ) { ?>
     <style>.featured-content{background:none;}</style>
 <?php } }
 
+if ( get_theme_mod( 'fourteenxt_num_grid_columns' ) ) {
+	// Apply custom settings to appropriate element ?>
+    <style>
+	    @media screen and (min-width: 1008px) {
+		    .grid .featured-content .hentry {
+		        width: 24.999999975%;
+	        }
+	        .grid .featured-content .hentry:nth-child( 3n+1 ) {
+		        clear: none;
+	        }
+	        .grid .featured-content .hentry:nth-child( 4n+1 ) {
+		        clear: both;
+	        }
+	    }
+	</style>
+<?php }
+
 if ( get_theme_mod( 'fourteenxt_featured_remove' ) != 0 ) { ?>
-    <style>.featured-content{display:none;}</style>
+    <style>.featured-content{display:none; visibility: hidden;}</style>
 <?php }
 
 if ( get_theme_mod( 'fourteenxt_home_content_separator' ) != 1 ) {

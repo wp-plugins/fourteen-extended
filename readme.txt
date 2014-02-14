@@ -3,11 +3,13 @@ Contributors: Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
 Tested up to: 3.9-alpha
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
 == Description ==
+NEW Option: control the number of posts that appear in the grid/slider plus switch grid content between 3 & 4 columns
+
 Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen theme without touching a single line of code.
 
 Don't like the site alignment? 
@@ -78,6 +80,10 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+
+= 1.2.1 =
+* NEW: Added options for finer Featured content control - number of posts for grid/slider plus switch between 3 and 4 column grid layout.
+* NEW: Added option to set full width page to true full width by removing the left sidebar on per page basis.
 
 = 1.2.0 =
 * NEW: Added option to remove the featured content altogether from front end as well as the customizer section.

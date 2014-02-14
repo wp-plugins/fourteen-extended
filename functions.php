@@ -5,7 +5,7 @@ Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme without touching code.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.2.0
+Version:     1.2.1
 License:     GPL
 */
 
@@ -26,6 +26,26 @@ function fourteenxt_extended_load_textdomain() {
 	load_plugin_textdomain( 'fourteenxt' );
 }
 add_action( 'plugins_loaded', 'fourteenxt_extended_load_textdomain' );
+
+if ( ! function_exists( 'fourteenxt_setup' ) ) :
+/**
+ * Sets up theme defaults and registers support for various WordPress features.
+ *
+ * Note that this function is hooked into the after_setup_theme hook, which runs
+ * before the init hook. The init hook is too late for some features, such as indicating
+ * support post thumbnails.
+ */
+function fourteenxt_setup() {	
+	// Add support for featured content.
+	$layout = get_theme_mod( 'featured_content_layout' );
+    $max_posts = get_theme_mod( 'num_posts_' . $layout, 2 );
+	add_theme_support( 'featured-content', array(
+		'featured_content_filter' => 'twentyfourteen_get_featured_posts',
+		'max_posts' => $max_posts,
+	) );
+}
+add_action( 'after_setup_theme', 'fourteenxt_setup', 11 );
+endif; // fourteenxt_setup
 
 // Customizer Moved to inc folder - since v1.0.9
 require_once('inc/fourteenxt-customizer.php'); // Include Extended Customizer
@@ -298,4 +318,19 @@ function fourteenxt_remove_widgets(){
 	unregister_sidebar( 'sidebar-1' );
 }
 add_action( 'widgets_init', 'fourteenxt_remove_widgets', 11 );
+}
+
+/*
+ * Add Featured Content functionality.
+ *
+ * To overwrite in a plugin, define your own Featured_Content class on or
+ * before the 'setup_theme' hook.
+ */
+define( 'FOURTEEN_EXTENDED_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+
+// Add Theme Custom Meta Boxes.
+require FOURTEEN_EXTENDED_PLUGIN_DIR . 'functions/custom.php';
+ 
+if ( ! class_exists( 'Featured_Content' ) && 'plugins.php' !== $GLOBALS['pagenow'] ) {
+	require FOURTEEN_EXTENDED_PLUGIN_DIR . 'inc/featured-content.php';
 }
