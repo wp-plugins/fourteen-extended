@@ -8,6 +8,8 @@ Description: Customize the layout of the Twenty Fourteen Theme, directly within 
 License: GPLv2
 
 == Description ==
+NOTE: To multisite users:- Plugin should only be activated on per site basis and not as Network Activated!
+
 NEW Option: control the number of posts that appear in the grid/slider plus switch grid content between 3 & 4 columns
 
 Fourteen Extended is the most efficient way to re-configure the Twenty Fourteen theme without touching a single line of code.
