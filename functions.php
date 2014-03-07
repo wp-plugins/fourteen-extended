@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Fourteen Extended 1.2.2
+Plugin Name: Fourteen Extended
 Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme without touching code.
 Author:      Zulfikar Nore
