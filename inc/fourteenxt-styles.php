@@ -106,8 +106,11 @@ if ( get_theme_mod( 'fourteenxt_content_off_featured_image' ) ) {
 
 if ( get_theme_mod( 'fourteenxt_hide_left_sidebar' ) != 0 ) { 
 ?>
-    <style>.site:before,#secondary{width:0;display:none;}.ie8 .site:before,.ie8 #secondary{width:0px;display:none;}.featured-content{padding-left:0;}.site-content,.site-main .widecolumn{margin-left:0;}.ie8 .site-content,.ie8 .site-main .widecolumn{margin-left:0;}
-		@media screen and (min-width: 1008px) {.search-box-wrapper{padding-left:0;}}@media screen and (min-width: 1080px) {.search-box-wrapper,.featured-content{padding-left:0;}}
+    <style>.site:before,#secondary{width:0;display:none;}.ie8 .site:before,.ie8 #secondary{width:0px;display:none;}
+	    .featured-content{padding-left:0;}.site-content,.site-main .widecolumn{margin-left:0;}.ie8 .site-content,.ie8 .site-main .widecolumn{margin-left:0;}
+		@media screen and (min-width: 1008px) {.search-box-wrapper{padding-left:0;}}
+		@media screen and (min-width: 1080px) {.search-box-wrapper,.featured-content{padding-left:0;}}
+		@media screen and (min-width: 1080px) {.grid-content{padding-left:0;}}
 	</style>
 <?php } 
 
@@ -124,7 +127,7 @@ $overall_image_height  = esc_html( get_theme_mod( 'fourteenxt_overall_image_heig
 if ( get_theme_mod( 'fourteenxt_enable_image_width' ) != 0 ) : ?>
     <style>
 	    .site-content .post-thumbnail{background:none;}.site-content a.post-thumbnail:hover{background-color:transparent;}
-		.site-content img.size-full,.site-content img.size-large,.site-content .wp-post-image,.site-content .post-thumbnail img,.site-content .post-thumbnail img{width:100%;}
+		.site-content .post-thumbnail img{width:100%;}
 	</style>
 <?php endif;
 

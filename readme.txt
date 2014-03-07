@@ -1,9 +1,9 @@
-=== Fourteen Extended ===
+=== Fourteen Extended 1.2.2 Beta ===
 Contributors: Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
 Tested up to: 3.9-alpha
-Stable tag: 1.2.1
+Stable tag: 1.2.2-beta
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
@@ -58,7 +58,9 @@ Now with complete width control - go full screen at 3200px or go boxed down to 9
 
 Fourteen Extended will help you center align your entire site, set your blog feed to the glorious Twenty Fourteen full width look plus an option to set the single posts to full width too! Please report any issues on the support forums.
 
-For better and quick responses to your support request please use the plugin forum at: http://wpdefault.com/forums/forum/fourteen-extended/
+For better and quick responses to your support request please use the plugin forum at: [Support] (http://wpdefault.com/forums/forum/fourteen-extended/)
+
+Need more customization features? Try the [Styles: Twenty Fourteen] (http://wordpress.org/plugins/styles-twentyfourteen/) plugin
 
 == Installation ==
 
@@ -82,6 +84,11 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+
+= 1.2.2 =
+* Amended: Excerpt settings now includes the archives, categories, tags, searches and author pages.
+* Removed featured-content.php from plugin as it was causing conflict with Jetpack on some installs
+* Minor adjustments to code and css. 
 
 = 1.2.1 =
 * NEW: Added options for finer Featured content control - number of posts for grid/slider plus switch between 3 and 4 column grid layout.

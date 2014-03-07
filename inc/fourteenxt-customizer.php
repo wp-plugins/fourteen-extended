@@ -9,7 +9,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 
     $wp_customize->add_section( 'fourteenxt_control_options' , array(
        'title'      => __('TwentyFourteen Start Here','fourteenxt'),
-	   'description' => sprintf( __( 'Welcome and thank you for using Fourteen Extended plugin.<br/><br/> The purpose of this plugin is to help you customizer your Twenty Fourteen run website with ease while still giving you much of the control.<br/><br/> Not every option is suitable or required for/by everyone hence why there multiple sections to separate the controls.<br/><br/> Your first control is below and it allows you to disable the CSS output of the plugin without deactivating it while still remaining in the Customizer section adjusting other settings or debugging issues!', 'fourteenxt' )),
+	   'description' => sprintf( __( 'Welcome and thank you for using Fourteen Extended plugin.<br/><br/> The purpose of this plugin is to help you customizer your Twenty Fourteen run website with ease while still giving you much of the control.<br/><br/> Not every option is suitable or required for/by everyone hence why there multiple sections to separate the controls.<br/><br/> Your first control is below and it allows you to disable the CSS output of the plugin without deactivating it while still remaining in the Customizer section adjusting other settings or debugging issues!<br/><br/>Want more options and features? Try the <a href="http://wordpress.org/plugins/styles-twentyfourteen/" target="_blank" />Styles: Twenty Fourteen</a> plugin', 'fourteenxt' )),
        'priority'   => 30,
     ) );
 	
@@ -41,6 +41,13 @@ function fourteenxt_customize_register( $wp_customize ) {
        'title'      => __('TwentyFourteen Optional Scripts','fourteenxt'),
 	   'description' => sprintf( __( 'Use the following settings to load scripts. Only use these when needed i.e for IE8 support.', 'fourteenxt' )),
        'priority'   => 35,
+    ) );
+	
+	$wp_customize->add_section( 'fourteenxt_slider_options' , array(
+        'title'      => __('Featured Slider Options','fourteenxt'),
+	    'description' => sprintf( __( 'Use the following settings to set slider options. Use wisely - in most cases it is best to leave the width setting as is! Only check the "Remove featured background" box if you have reduced the width setting', 'fourteenxt' )),
+        'priority'   => 132,
+		'theme_supports' => 'featured-content',
     ) );
 		
 	// Plugin Control - Enable/Disable
@@ -396,14 +403,14 @@ function fourteenxt_customize_register( $wp_customize ) {
 	));
 	
 	$wp_customize->add_setting(
-        'fourteenxt_home_excerpts'
+        'fourteenxt_feed_excerpts'
     );
 
     $wp_customize->add_control(
-        'fourteenxt_home_excerpts',
+        'fourteenxt_feed_excerpts',
     array(
         'type'     => 'checkbox',
-        'label'    => __('Switch blog feed to show excerpts?', 'fourteenxt'),
+        'label'    => __('Switch blog feed to show excerpts? This includes Archives, Categories, Tags, Author & Search Pages!', 'fourteenxt'),
         'section'  => 'fourteenxt_content_options',
 		'priority' => 12,
         )
@@ -508,6 +515,177 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 3,
         'type' => 'text',
     ));
+		
+		
+	// Extend Featured Content
+	// Primary post type to be featured.
+	$post_types = get_post_types();
+	$cpt = array( 'Select Post Type To Feature' );
+	    $i = 0;
+	    foreach($post_types as $post_type){
+		if ( in_array( $post_type, array( 'attachment', 'revision', 'nav_menu_item' ) ) ) continue;
+		    if($i==0){
+			    $default = $post_type;
+			    $i++;
+		    }
+		    $cpt[$post_type] = $post_type;
+	    }
+ 
+	$wp_customize->add_setting('featured_content_custom_type', array(
+	    'default'  => 'post',
+	));
+	$wp_customize->add_control( 'featured_content_custom_type', array(
+	    'settings' => 'featured_content_custom_type',
+	    'label'   => __('Select Post Type - posts, pages & custom post types are supported!', 'fourteenxt'),
+	    'section'  => 'featured_content',
+	    'priority' => 21,
+	    'type'    => 'select',
+	    'choices' => $cpt,
+	));
+		
+	$wp_customize->add_setting(
+        'fourteenxt_num_grid_columns', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+	    )
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_num_grid_columns',
+        array(
+            'type'     => 'checkbox',
+            'label'    => __('Switch Featured Grid Columns to 4?', 'fourteenxt'),
+            'section'  => 'featured_content',
+	        'priority' => 23,
+        )
+    );
+		
+	$wp_customize->add_setting( 'num_posts_grid', array( 
+	    'default' => 6,
+        'sanitize_callback' => 'absint'		
+	) );
+	
+	$wp_customize->add_control( 'num_posts_grid', array(
+        'label' => __( 'Number of posts for grid - multiple of 3s or 4s depending on column selection.', 'fourteenxt'),
+        'section' => 'featured_content',
+	    'priority' => 24,
+        'settings' => 'num_posts_grid',
+    ) );
+	
+	$wp_customize->add_setting( 'num_posts_slider', array( 
+	    'default' => 6,
+        'sanitize_callback' => 'absint'		
+	) );
+	
+	$wp_customize->add_control( 'num_posts_slider', array(
+        'label' => __( 'Number of posts for slider', 'fourteenxt'),
+        'section' => 'featured_content',
+	    'priority' => 25,
+        'settings' => 'num_posts_slider',
+    ) );
+		
+	// Begin Slider Options
+	$wp_customize->add_setting(
+        'fourteenxt_enable_autoslide', array (
+	    'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+	    )
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_enable_autoslide',
+        array(
+            'type'     => 'checkbox',
+            'label'    => __('Check to set Slider to Auto Fade/Slide', 'fourteenxt'),
+            'section'  => 'fourteenxt_slider_options',
+	        'priority' => 1,
+        )
+    );
+	
+	$wp_customize->add_setting( 'fourteenxt_slider_transition', array(
+	    'default' => 'slide',
+	    'sanitize_callback' => 'fourteenxt_sanitize_transition'
+	) );
+	
+	$wp_customize->add_control( 'fourteenxt_slider_transition', array(
+        'label'   => __( 'Slider Transition', 'fourteenxt' ),
+        'section' => 'fourteenxt_slider_options',
+	    'priority' => 2,
+        'type'    => 'radio',
+            'choices' => array(
+                'slide' => __( 'Slide', 'fourteenxt' ),
+                'fade' => __( 'Fade', 'fourteenxt' ),
+            ),
+        )
+	);
+	
+	$wp_customize->add_setting(
+        'fourteenxt_slider_width',
+        array(
+            'default' => '1600',
+	        'sanitize_callback' => 'absint'
+        )
+	);
+	
+	$wp_customize->add_control(
+        'fourteenxt_slider_width',
+        array(
+            'label' => __('Set Slider max-width (numbers only!) - Default is 1600.','fourteenxt'),
+            'section' => 'fourteenxt_slider_options',
+	        'priority' => 3,
+            'type' => 'text',
+        )
+	);
+	
+	$wp_customize->add_setting(
+        'fourteenxt_slider_height',
+        array(
+            'default' => '500',
+	        'sanitize_callback' => 'absint'
+        )
+	);
+	
+	$wp_customize->add_control(
+        'fourteenxt_slider_height',
+        array(
+            'label' => __('Set Slider max-height (numbers only!) - Default is 500!','fourteenxt'),
+            'section' => 'fourteenxt_slider_options',
+	        'priority' => 4,
+            'type' => 'text',
+        )
+	);
+	
+	$wp_customize->add_setting(
+        'fourteenxt_slider_topmargin',
+        array(
+            'default' => '0',
+	        'sanitize_callback' => 'absint'
+        )
+	);
+	
+	$wp_customize->add_control(
+        'fourteenxt_slider_topmargin',
+        array(
+            'label' => __('Set Slider Top Margin (numbers only!) - Default is 0!','fourteenxt'),
+            'section' => 'fourteenxt_slider_options',
+	        'priority' => 5,
+            'type' => 'text',
+        )
+	);
+	
+	$wp_customize->add_setting(
+        'fourteenxt_featured_bg_visibility', array (
+	    'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+	    )
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_featured_bg_visibility',
+        array(
+            'type'     => 'checkbox',
+            'label'    => __('Remove the featured background?', 'fourteenxt'),
+            'section'  => 'fourteenxt_slider_options',
+	        'priority' => 6,
+        )
+    );
 	
 	// Mobile View Options
     $wp_customize->add_setting(

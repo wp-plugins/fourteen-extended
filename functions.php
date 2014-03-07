@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Fourteen Extended
+Plugin Name: Fourteen Extended 1.2.2 Beta
 Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme without touching code.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.2.1
+Version:     1.2.2
 License:     GPL
 */
 
@@ -47,6 +47,59 @@ function fourteenxt_setup() {
 add_action( 'after_setup_theme', 'fourteenxt_setup', 11 );
 endif; // fourteenxt_setup
 
+/*
+ * Lets filter the Twenty Fourteen Featured content so that we can use pages or a custom post type instead of posts.
+ */
+function fourteenxt_get_featured_posts( $posts ){
+
+$fourteenxt_options = (array) get_option( 'featured-content' );
+
+if ( $fourteenxt_options ) {
+    $tag_name = $fourteenxt_options['tag-name'];
+} else {
+    $tag_name = 'featured';
+}
+
+// At this point in the filter we are recalling the layout and content count.
+$layout = get_theme_mod( 'featured_content_layout' );
+$max_posts = get_theme_mod( 'num_posts_' . $layout, 2 );
+
+// Here we determine what content type we are going to feature - Posts, Pages or a Custom Post Type.
+$content_type = get_theme_mod( 'featured_content_custom_type' );
+
+// Now we put it all together before returning it in a new post array ready for output.
+$args = array(
+    'tag' => $tag_name,
+    'posts_per_page' => $max_posts,
+    'post_type' => array( $content_type ),
+    'order_by' => 'post_date',
+    'order' => 'DESC',
+    'post_status' => 'publish',
+);
+
+$new_post_array = get_posts( $args );
+
+if ( count($new_post_array) > 0 ) {
+    return $new_post_array;
+} else {
+    return $posts;
+}
+
+}
+add_filter( 'twentyfourteen_get_featured_posts', 'fourteenxt_get_featured_posts', 999, 1 );
+
+
+/*
+ * Now lets add the meta box for tags on Page edit screen.
+ */
+if( ! function_exists('fourteenxt_register_taxonomy') ){
+
+    function fourteenxt_register_taxonomy() {
+        register_taxonomy_for_object_type('post_tag', 'page');
+    }
+    add_action('admin_init', 'fourteenxt_register_taxonomy');
+}
+
 // Customizer Moved to inc folder - since v1.0.9
 require_once('inc/fourteenxt-customizer.php'); // Include Extended Customizer
 
@@ -67,11 +120,11 @@ add_action( 'pre_get_posts', 'fourteenxt_blog_feed_cat', 1 );
  *
  * @since Fourteen Extended 1.1.2
  */
-if ( get_theme_mod( 'fourteenxt_home_excerpts' ) != 0 ) {
+if ( get_theme_mod( 'fourteenxt_feed_excerpts' ) != 0 ) {
 function fourteenxt_excerpts($content = false) {
 
 // If is the home page, an archive, or search results
-	if(is_home() ) :
+	if(is_home() || is_archive() && !is_singular() ) :
 		global $post;
 		$content = $post->post_excerpt;
 
@@ -269,7 +322,7 @@ if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
 		$classes[] = 'singular';
 	}
 
-	if ( is_front_page() && 'slider' == get_theme_mod( 'featured_content_layout' ) ) {
+	if ( is_front_page()  && 'slider' == get_theme_mod( 'featured_content_layout' ) ) {
 		$classes[] = 'slider';
 	} elseif ( is_front_page() ) {
 		$classes[] = 'grid';
@@ -331,6 +384,3 @@ define( 'FOURTEEN_EXTENDED_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 // Add Theme Custom Meta Boxes.
 require FOURTEEN_EXTENDED_PLUGIN_DIR . 'functions/custom.php';
  
-if ( ! class_exists( 'Featured_Content' ) && 'plugins.php' !== $GLOBALS['pagenow'] ) {
-	require FOURTEEN_EXTENDED_PLUGIN_DIR . 'inc/featured-content.php';
-}
