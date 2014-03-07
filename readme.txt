@@ -1,4 +1,4 @@
-=== Fourteen Extended 1.2.2 Beta ===
+=== Fourteen Extended 1.2.2 ===
 Contributors: Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
