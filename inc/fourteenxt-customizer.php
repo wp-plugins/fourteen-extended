@@ -24,13 +24,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 	   'description' => sprintf( __( 'Use the following settings to set content options. A screen refresh may be required to see some of the changes in the customizer!', 'fourteenxt' )),
        'priority'   => 32,
     ) );
-	
-	$wp_customize->add_section( 'fourteenxt_fitvids_options' , array(
-       'title'      => __('TwentyFourteen FitVids Options','fourteenxt'),
-	   'description' => sprintf( __( 'Use the following settings to set fitvids script options. Options are: Enable script, Set selector (Default is .post) and set custom selector (optional) for other areas like .sidebar or a custom section!', 'fourteenxt' )),
-       'priority'   => 33,
-    ) );
-	
+		
 	$wp_customize->add_section( 'fourteenxt_mobile_options' , array(
        'title'      => __('TwentyFourteen Mobile Options','fourteenxt'),
 	   'description' => sprintf( __( 'Use the following settings to set mobile options. Options are: Show full content on home page on mobile instead of list view. Featured content mobile layout - grid or slider. Please note that the mobile layout will only work if the device is a mobile therefore minimizing the desktop window will have no effect and will show the default layout set in the featured section.', 'fourteenxt' )),
@@ -144,9 +138,25 @@ function fourteenxt_customize_register( $wp_customize ) {
         'fourteenxt_hide_left_sidebar',
     array(
         'type'     => 'checkbox',
-        'label'    => __('Remove Left Sidebar? - Hide left sidebar sitewide', 'fourteenxt'),
+        'label'    => __('Remove Primary (Left) Sidebar? - Hide left sidebar sitewide', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
 		'priority' => 5,
+        )
+    );
+	
+	$wp_customize->add_setting(
+        'fourteenxt_primary_sidebar_right', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_primary_sidebar_right',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Float Primary (Left) Sidebar To The Right? - Leave unchecked if left sidebar is set to hide above!', 'fourteenxt'),
+        'section'  => 'fourteenxt_general_options',
+		'priority' => 6,
         )
     );
 	
@@ -162,7 +172,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Overall Content (hentry) max-width (numbers only!) - maximum recommended is 1260 & Default is 1038.','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 6,
+		'priority' => 7,
         'type' => 'text',
     ));
 		
@@ -178,7 +188,7 @@ function fourteenxt_customize_register( $wp_customize ) {
     array(
         'label' => __('Set Overall Content Image max-height (numbers only!) - maximum recommended is 572.','fourteenxt'),
         'section' => 'fourteenxt_general_options',
-		'priority' => 7,
+		'priority' => 8,
         'type' => 'text',
     ));
 	
@@ -194,7 +204,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Make post featured images span 100% width?', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
-		'priority' => 8,
+		'priority' => 9,
         )
     );
 	
@@ -210,7 +220,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Remove background image and color?', 'fourteenxt'),
         'section'  => 'fourteenxt_general_options',
-		'priority' => 9,
+		'priority' => 10,
         )
     );
 	
@@ -466,227 +476,7 @@ function fourteenxt_customize_register( $wp_customize ) {
 		'priority' => 15,
         )
     );
-	
-	// Add FitVids to site
-    $wp_customize->add_setting(
-        'fourteenxt_fitvids_enable', array (
-			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
-		)
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_fitvids_enable',
-    array(
-        'type'     => 'checkbox',
-        'label'    => __('Enable FitVids?', 'fourteenxt'),
-        'section'  => 'fourteenxt_fitvids_options',
-		'priority' => 1,
-        )
-    );
-	
-	$wp_customize->add_setting(
-    'fourteenxt_fitvids_selector',
-    array(
-        'default' => '.post',
-		'sanitize_callback' => 'sanitize_text_field'
-    ));
-	
-	$wp_customize->add_control(
-    'fourteenxt_fitvids_selector',
-    array(
-        'label' => __('Enter a selector for FitVids - i.e. .post','fourteenxt'),
-        'section' => 'fourteenxt_fitvids_options',
-		'priority' => 2,
-        'type' => 'text',
-    ));
-	
-	$wp_customize->add_setting(
-    'fourteenxt_fitvids_custom_selector',
-    array(
-        'default' => '',
-		'sanitize_callback' => 'sanitize_text_field'
-    ));
-	
-	$wp_customize->add_control(
-    'fourteenxt_fitvids_custom_selector',
-    array(
-        'label' => __('Enter a custom selector for FitVids - i.e. .sidebar','fourteenxt'),
-        'section' => 'fourteenxt_fitvids_options',
-		'priority' => 3,
-        'type' => 'text',
-    ));
-		
-		
-	// Extend Featured Content
-	// Primary post type to be featured.
-	$post_types = get_post_types();
-	$cpt = array( 'Select Post Type To Feature' );
-	    $i = 0;
-	    foreach($post_types as $post_type){
-		if ( in_array( $post_type, array( 'attachment', 'revision', 'nav_menu_item' ) ) ) continue;
-		    if($i==0){
-			    $default = $post_type;
-			    $i++;
-		    }
-		    $cpt[$post_type] = $post_type;
-	    }
- 
-	$wp_customize->add_setting('featured_content_custom_type', array(
-	    'default'  => 'post',
-	));
-	$wp_customize->add_control( 'featured_content_custom_type', array(
-	    'settings' => 'featured_content_custom_type',
-	    'label'   => __('Select Post Type - posts, pages & custom post types are supported!', 'fourteenxt'),
-	    'section'  => 'featured_content',
-	    'priority' => 21,
-	    'type'    => 'select',
-	    'choices' => $cpt,
-	));
-		
-	$wp_customize->add_setting(
-        'fourteenxt_num_grid_columns', array (
-			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
-	    )
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_num_grid_columns',
-        array(
-            'type'     => 'checkbox',
-            'label'    => __('Switch Featured Grid Columns to 4?', 'fourteenxt'),
-            'section'  => 'featured_content',
-	        'priority' => 23,
-        )
-    );
-		
-	$wp_customize->add_setting( 'num_posts_grid', array( 
-	    'default' => 6,
-        'sanitize_callback' => 'absint'		
-	) );
-	
-	$wp_customize->add_control( 'num_posts_grid', array(
-        'label' => __( 'Number of posts for grid - multiple of 3s or 4s depending on column selection.', 'fourteenxt'),
-        'section' => 'featured_content',
-	    'priority' => 24,
-        'settings' => 'num_posts_grid',
-    ) );
-	
-	$wp_customize->add_setting( 'num_posts_slider', array( 
-	    'default' => 6,
-        'sanitize_callback' => 'absint'		
-	) );
-	
-	$wp_customize->add_control( 'num_posts_slider', array(
-        'label' => __( 'Number of posts for slider', 'fourteenxt'),
-        'section' => 'featured_content',
-	    'priority' => 25,
-        'settings' => 'num_posts_slider',
-    ) );
-		
-	// Begin Slider Options
-	$wp_customize->add_setting(
-        'fourteenxt_enable_autoslide', array (
-	    'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
-	    )
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_enable_autoslide',
-        array(
-            'type'     => 'checkbox',
-            'label'    => __('Check to set Slider to Auto Fade/Slide', 'fourteenxt'),
-            'section'  => 'fourteenxt_slider_options',
-	        'priority' => 1,
-        )
-    );
-	
-	$wp_customize->add_setting( 'fourteenxt_slider_transition', array(
-	    'default' => 'slide',
-	    'sanitize_callback' => 'fourteenxt_sanitize_transition'
-	) );
-	
-	$wp_customize->add_control( 'fourteenxt_slider_transition', array(
-        'label'   => __( 'Slider Transition', 'fourteenxt' ),
-        'section' => 'fourteenxt_slider_options',
-	    'priority' => 2,
-        'type'    => 'radio',
-            'choices' => array(
-                'slide' => __( 'Slide', 'fourteenxt' ),
-                'fade' => __( 'Fade', 'fourteenxt' ),
-            ),
-        )
-	);
-	
-	$wp_customize->add_setting(
-        'fourteenxt_slider_width',
-        array(
-            'default' => '1600',
-	        'sanitize_callback' => 'absint'
-        )
-	);
-	
-	$wp_customize->add_control(
-        'fourteenxt_slider_width',
-        array(
-            'label' => __('Set Slider max-width (numbers only!) - Default is 1600.','fourteenxt'),
-            'section' => 'fourteenxt_slider_options',
-	        'priority' => 3,
-            'type' => 'text',
-        )
-	);
-	
-	$wp_customize->add_setting(
-        'fourteenxt_slider_height',
-        array(
-            'default' => '500',
-	        'sanitize_callback' => 'absint'
-        )
-	);
-	
-	$wp_customize->add_control(
-        'fourteenxt_slider_height',
-        array(
-            'label' => __('Set Slider max-height (numbers only!) - Default is 500!','fourteenxt'),
-            'section' => 'fourteenxt_slider_options',
-	        'priority' => 4,
-            'type' => 'text',
-        )
-	);
-	
-	$wp_customize->add_setting(
-        'fourteenxt_slider_topmargin',
-        array(
-            'default' => '0',
-	        'sanitize_callback' => 'absint'
-        )
-	);
-	
-	$wp_customize->add_control(
-        'fourteenxt_slider_topmargin',
-        array(
-            'label' => __('Set Slider Top Margin (numbers only!) - Default is 0!','fourteenxt'),
-            'section' => 'fourteenxt_slider_options',
-	        'priority' => 5,
-            'type' => 'text',
-        )
-	);
-	
-	$wp_customize->add_setting(
-        'fourteenxt_featured_bg_visibility', array (
-	    'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
-	    )
-    );
-
-    $wp_customize->add_control(
-        'fourteenxt_featured_bg_visibility',
-        array(
-            'type'     => 'checkbox',
-            'label'    => __('Remove the featured background?', 'fourteenxt'),
-            'section'  => 'fourteenxt_slider_options',
-	        'priority' => 6,
-        )
-    );
-	
+			
 	// Mobile View Options
     $wp_customize->add_setting(
         'fourteenxt_body_class_filters', array (
@@ -727,6 +517,56 @@ function fourteenxt_customize_register( $wp_customize ) {
 	);
 		
 	// Begin Optional Scripts options
+	// Add FitVids to site
+    $wp_customize->add_setting(
+        'fourteenxt_fitvids_enable', array (
+			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
+		)
+    );
+
+    $wp_customize->add_control(
+        'fourteenxt_fitvids_enable',
+    array(
+        'type'     => 'checkbox',
+        'label'    => __('Enable FitVids?', 'fourteenxt'),
+        'section'  => 'fourteenxt_scripts_options',
+		'priority' => 1,
+        )
+    );
+	
+	$wp_customize->add_setting(
+    'fourteenxt_fitvids_selector',
+    array(
+        'default' => '.post',
+		'sanitize_callback' => 'sanitize_text_field'
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_fitvids_selector',
+    array(
+        'label' => __('Enter a selector for FitVids - i.e. .post','fourteenxt'),
+        'section' => 'fourteenxt_scripts_options',
+		'priority' => 2,
+        'type' => 'text',
+    ));
+	
+	$wp_customize->add_setting(
+    'fourteenxt_fitvids_custom_selector',
+    array(
+        'default' => '',
+		'sanitize_callback' => 'sanitize_text_field'
+    ));
+	
+	$wp_customize->add_control(
+    'fourteenxt_fitvids_custom_selector',
+    array(
+        'label' => __('Enter a custom selector for FitVids - i.e. .content-sidebar','fourteenxt'),
+        'section' => 'fourteenxt_scripts_options',
+		'priority' => 3,
+        'type' => 'text',
+    ));
+	
+	
 	$wp_customize->add_setting(
         'fourteenxt_load_selectivizr', array (
 			'sanitize_callback' => 'fourteenxt_sanitize_checkbox',
@@ -739,7 +579,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Load Selectivizr.js script?', 'fourteenxt'),
         'section'  => 'fourteenxt_scripts_options',
-		'priority' => 1,
+		'priority' => 4,
         )
     );
 	
@@ -755,7 +595,7 @@ function fourteenxt_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
         'label'    => __('Load Respond.js script?', 'fourteenxt'),
         'section'  => 'fourteenxt_scripts_options',
-		'priority' => 2,
+		'priority' => 5,
         )
     );
 }

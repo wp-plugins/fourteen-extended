@@ -16,6 +16,29 @@ if ( get_theme_mod( 'fourteenxt_center_site' ) != 0 ) {
 	    .site-content .entry-content,.site-content .entry-summary,.site-content footer.entry-meta{padding-left: 55px;}}</style>
 <?php }
 
+
+if ( get_theme_mod( 'fourteenxt_primary_sidebar_right' ) != 0 ) { ?>
+<style>
+.featured-content,.grid-content{padding-left:0;}
+@media screen and (min-width: 673px) {
+    .content-area {float: left;width: 100%;}.site-content {margin-right: 33.33333333%;margin-left: 0;}
+	.content-sidebar {float: left;margin-left: -45.5%;padding: 72px 30px 24px;position: relative;width: 33.33333333%;}
+}
+
+@media screen and (min-width: 1008px) {
+    .featured-content,.grid-content {padding-right: 182px;}
+	.main-content {float: left;}.site-content {margin-right: 29.04761904%;margin-left: 0;}
+	.content-sidebar {margin-left: -45.5%;	width: 29.04761904%;}
+    .site:before {width: 0;z-index: -20;display: none;}
+   	#secondary { background-color: transparent; border: 0;clear: none;float: right;margin: 0 0 0 -100%;min-height: 100vh;padding-top: 10px;}
+	.site:after{background-color: #000;content: "";display: block;	height: 100%;min-height: 100%;position: absolute;top: 0;right: 0;width: 182px;z-index: 1;}
+}
+@media screen and (min-width: 1080px) {
+    .site:after {width: 222px; background-color: #000;}
+	.featured-content,.site-content,.grid-content {padding-right: 222px;}
+}
+</style>
+<?php }
 if ( get_post_meta(get_the_ID(), '_fourteenxt_true_fullwidth', true )) {
 if ( is_page_template( 'page-templates/full-width.php' )) :
 ?>
@@ -30,14 +53,14 @@ if ( is_page_template( 'page-templates/full-width.php' )) :
 .full-width .site-content .entry-content,
 .full-width .site-content .entry-summary,
 .full-width .site-content footer.entry-meta {
-	max-width: 1200px;
+	max-width: 1080px;
 	width: 100%;
+	padding: 0 !important;
 }
 .site:before,#secondary{width:0;display:none;}.ie8 .site:before,.ie8 #secondary{width:0px;display:none;}.featured-content{padding-left:0;}.site-content,.site-main .widecolumn{margin-left:0;}.ie8 .site-content,.ie8 .site-main .widecolumn{margin-left:0;}
 @media screen and (min-width: 1008px) {.search-box-wrapper{padding-left:0;}}@media screen and (min-width: 1080px) {.search-box-wrapper,.featured-content{padding-left:0;}}
 </style>
 <?php endif; }
-
 }
 add_action( 'wp_head', 'fourteenxt_general_css' );
 

@@ -5,7 +5,7 @@ Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme without touching code.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.2.2
+Version:     1.2.3
 License:     GPL
 */
 
@@ -52,7 +52,7 @@ endif; // fourteenxt_setup
  */
 function fourteenxt_get_featured_posts( $posts ){
 
-$fourteenxt_options = (array) get_option( 'featured-content' );
+$fourteenxt_options = get_option( 'featured-content' );
 
 if ( $fourteenxt_options ) {
     $tag_name = $fourteenxt_options['tag-name'];
@@ -63,7 +63,8 @@ if ( $fourteenxt_options ) {
 // At this point in the filter we are recalling the layout and content count.
 $layout = get_theme_mod( 'featured_content_layout' );
 $max_posts = get_theme_mod( 'num_posts_' . $layout, 2 );
-
+$orderby = get_theme_mod( 'fourteenxt_featured_orderby' );
+$order = get_theme_mod( 'fourteenxt_featured_order' );
 // Here we determine what content type we are going to feature - Posts, Pages or a Custom Post Type.
 $content_type = get_theme_mod( 'featured_content_custom_type' );
 
@@ -71,13 +72,13 @@ $content_type = get_theme_mod( 'featured_content_custom_type' );
 $args = array(
     'tag' => $tag_name,
     'posts_per_page' => $max_posts,
-    'post_type' => array( $content_type ),
-    'order_by' => 'post_date',
-    'order' => 'DESC',
+    'post_type' => array($content_type),
+	'orderby' => $orderby,
+    'order' => $order,
     'post_status' => 'publish',
 );
 
-$new_post_array = get_posts( $args );
+$new_post_array = get_posts($args);
 
 if ( count($new_post_array) > 0 ) {
     return $new_post_array;
@@ -103,7 +104,7 @@ if( ! function_exists('fourteenxt_register_taxonomy') ){
 // Customizer Moved to inc folder - since v1.0.9
 require_once('inc/fourteenxt-customizer.php'); // Include Extended Customizer
 
-function fourteenxt_blog_feed_cat( $query ) {
+function fourteenxt_blog_feed_cat($query) {
     if ( is_admin() || ! $query->is_main_query() )
         return;
 
@@ -189,19 +190,19 @@ if ( is_front_page() ) :
 wp_dequeue_script( 'twentyfourteen-script' );
 wp_dequeue_script( 'twentyfourteen-slider' );
 
-wp_enqueue_script( 'fourteenxt-script', plugin_dir_url( __FILE__ ) . 'js/functions.js', array( 'jquery', 'fourteenxt-slider' ), '' , true );
+wp_enqueue_script( 'fourteenxt-script', plugin_dir_url( __FILE__ ) . 'js/functions.js', array( 'jquery', 'fourteenxt-slider' ), '' , true);
 
-wp_enqueue_script( 'fourteenxt-slider', plugin_dir_url( __FILE__ ) . 'js/jquery.flexslider-min.js', array( 'jquery', ), '' , true );
+wp_enqueue_script( 'fourteenxt-slider', plugin_dir_url( __FILE__ ) . 'js/jquery.flexslider-min.js', array( 'jquery' ), '' , true);
 wp_localize_script( 'fourteenxt-slider', 'featuredSliderDefaults', array(
 'prevText' => __( 'Previous', 'fourteenxt' ),
 'nextText' => __( 'Next', 'fourteenxt' )
 ) );
 
 if ( get_theme_mod( 'fourteenxt_slider_transition' ) ==  'slide' ) :
-    wp_enqueue_script( 'fourteenxt-slider-slide', plugin_dir_url( __FILE__ ) . 'js/slider-slide.js', array( 'jquery', ), '' , true );
+    wp_enqueue_script( 'fourteenxt-slider-slide', plugin_dir_url( __FILE__ ) . 'js/slider-slide.js', array( 'jquery' ), '' , true);
 
 elseif ( get_theme_mod( 'fourteenxt_slider_transition' ) == 'fade' ) :
-    wp_enqueue_script( 'fourteenxt-slider-fade', plugin_dir_url( __FILE__ ) . 'js/slider-fade.js', array( 'jquery', ), '' , true );
+    wp_enqueue_script( 'fourteenxt-slider-fade', plugin_dir_url( __FILE__ ) . 'js/slider-fade.js', array( 'jquery' ), '' , true);
 endif;
 
 endif;
@@ -292,7 +293,7 @@ if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
     }
     add_action( 'init', 'fourteenxt_remove_body_classes', 31 );
 	
-	function fourteenxt_body_classes_reset( $classes ) {
+	function fourteenxt_body_classes_reset($classes) {
 	if ( is_multi_author() ) {
 		$classes[] = 'group-blog';
 	}
@@ -322,7 +323,7 @@ if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
 		$classes[] = 'singular';
 	}
 
-	if ( is_front_page()  && 'slider' == get_theme_mod( 'featured_content_layout' ) ) {
+	if ( is_front_page() && 'slider' == get_theme_mod( 'featured_content_layout' ) ) {
 		$classes[] = 'slider';
 	} elseif ( is_front_page() ) {
 		$classes[] = 'grid';
@@ -334,7 +335,7 @@ add_filter( 'body_class', 'fourteenxt_body_classes_reset' );
 }
 
 
-function fourteenxt_body_classes( $classes ) {
+function fourteenxt_body_classes($classes) {
 global $content_width;
 	
 	if (get_theme_mod( 'fourteenxt_fullwidth_blog_feed' ) != 0 ) {
@@ -383,4 +384,7 @@ define( 'FOURTEEN_EXTENDED_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 // Add Theme Custom Meta Boxes.
 require FOURTEEN_EXTENDED_PLUGIN_DIR . 'functions/custom.php';
- 
+
+if ( ! class_exists( 'Featured_Content' ) && 'plugins.php' !== $GLOBALS['pagenow'] ) {
+	require FOURTEEN_EXTENDED_PLUGIN_DIR . 'inc/featured-content.php';
+} 

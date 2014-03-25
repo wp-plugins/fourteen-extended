@@ -3,7 +3,7 @@ Contributors: Zulfikar Nore
 Tags: Twenty Fourteen, Custom Options, Custom, Options, Theme Customizer, Twenty Fourteen Theme, Default Theme, 2014, Center Site, Full Width Post Feed, Full Width Single Posts, FitVids
 Requires at least: 3.6
 Tested up to: 3.9-alpha
-Stable tag: 1.2.2-beta
+Stable tag: 1.2.3
 Description: Customize the layout of the Twenty Fourteen Theme, directly within the Theme Customizer.
 License: GPLv2
 
@@ -84,6 +84,14 @@ Fourteen Extended is a plugin, not a child theme, because it is primarily progra
 You can use Fourteen Extended with both the default Twenty Fourteen and its child themes. Be aware that the Fourteen Extended settings are stored with the active theme, so if you switch to a child theme or switch child themes, you'll need to re-set the configurations. Child theme compatibility depends on the extent of changes made by the child theme.
 
 == Changelog ==
+
+= 1.2.3 =
+* Reintroducing the featured-content.php template - Jetpack conflict can not be recreated and the two works fine together.
+* NEW: Added option to switch Primary (Left) Sidebar to the right of content-sidebar {Experimental}.
+* NEW: Added option to select featured order by - By Date Order | Random Order | Title Menu Order | Order By Post Name
+* NEW: Added options to switch featured display order - Descending Order | Ascending Order.
+* Fixed Undefined index Notice reported here: http://wordpress.org/support/topic/undefined-index-25?replies=4
+* Merged FitVids in to Optional Scripts section.
 
 = 1.2.2 =
 * Amended: Excerpt settings now includes the archives, categories, tags, searches and author pages.
