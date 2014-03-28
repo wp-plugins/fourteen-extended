@@ -5,7 +5,7 @@ Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme without touching code.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.2.3
+Version:     1.2.31
 License:     GPL
 */
 
@@ -387,4 +387,4 @@ require FOURTEEN_EXTENDED_PLUGIN_DIR . 'functions/custom.php';
 
 if ( ! class_exists( 'Featured_Content' ) && 'plugins.php' !== $GLOBALS['pagenow'] ) {
 	require FOURTEEN_EXTENDED_PLUGIN_DIR . 'inc/featured-content.php';
-} 
+}

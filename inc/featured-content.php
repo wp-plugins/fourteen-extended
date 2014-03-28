@@ -475,7 +475,7 @@ class Featured_Content {
 		
 		// Featured Section Order By.
 	    $wp_customize->add_setting( 'fourteenxt_featured_orderby', array(
-		    'default' => 'none',
+		    'default' => 'date',
 	    ) );
 	
 	    $wp_customize->add_control( 'fourteenxt_featured_orderby', array(
@@ -484,10 +484,12 @@ class Featured_Content {
 	        'priority' => 22,
             'type'    => 'radio',
             'choices' => array(
-                'none'             => __( 'Default - By Date', 'fourteenxt' ),
-			    'rand'             => __( 'Random Order', 'fourteenxt' ),
-				'title menu_order' => __( 'Title Menu Order {Pages}', 'fourteenxt' ),
-			    'name'             => __( 'Order By Post Name', 'fourteenxt' ),
+                'date'          => __( 'Default - By Post Dates', 'fourteenxt' ),				
+			    'name'          => __( 'By Post Names', 'fourteenxt' ),
+				'comment_count' => __( 'Popular By Comments', 'fourteenxt' ),
+				'title'         => __( 'By Titles {*Pages - works on posts}', 'fourteenxt' ),
+				'menu_order'    => __( 'By Menu {For Pages Only!}', 'fourteenxt' ),
+			    'rand'          => __( 'Random', 'fourteenxt' ),
             ),
         ));
 		
@@ -501,7 +503,7 @@ class Featured_Content {
 	        'priority' => 23,
             'type'    => 'radio',
             'choices' => array(
-                'DESC' => __( 'Descending Order', 'fourteenxt' ),
+                'DESC' => __( 'Descending Order - Default', 'fourteenxt' ),
 			    'ASC'  => __( 'Ascending Order', 'fourteenxt' ),
             ),
         ));
