@@ -5,7 +5,7 @@ Plugin URI:  http://wpdefault.com/fourteen-extended/
 Description: A functionality plugin for extending the Twenty Fourteen theme without touching code.
 Author:      Zulfikar Nore
 Author URI:  http://www.wpstrapcode.com/
-Version:     1.2.31
+Version:     1.2.32
 License:     GPL
 */
 
@@ -38,7 +38,7 @@ if ( ! function_exists( 'fourteenxt_setup' ) ) :
 function fourteenxt_setup() {	
 	// Add support for featured content.
 	$layout = get_theme_mod( 'featured_content_layout' );
-    $max_posts = get_theme_mod( 'num_posts_' . $layout, 2 );
+    $max_posts = get_theme_mod( 'num_posts_' . $layout, 6 );
 	add_theme_support( 'featured-content', array(
 		'featured_content_filter' => 'twentyfourteen_get_featured_posts',
 		'max_posts' => $max_posts,
@@ -62,7 +62,7 @@ if ( $fourteenxt_options ) {
 
 // At this point in the filter we are recalling the layout and content count.
 $layout = get_theme_mod( 'featured_content_layout' );
-$max_posts = get_theme_mod( 'num_posts_' . $layout, 2 );
+$max_posts = get_theme_mod( 'num_posts_' . $layout, 6 );
 $orderby = get_theme_mod( 'fourteenxt_featured_orderby' );
 $order = get_theme_mod( 'fourteenxt_featured_order' );
 // Here we determine what content type we are going to feature - Posts, Pages or a Custom Post Type.
@@ -147,24 +147,8 @@ function fourteenxt_excerpts($content = false) {
 				array_pop($words);
 				array_push($words, $more);
 				$content = implode(' ', $words);
-			endif;
+			endif;			
 			
-			// If post format is video use first video as excerpt
-            $postcustom = get_post_custom_keys();
-            if ($postcustom){
-                $i = 1;
-                foreach ($postcustom as $key){
-                    if (strpos($key,'oembed')){
-                        foreach (get_post_custom_values($key) as $video){
-                            if ($i == 1){
-                            $content = $video;
-                            }
-                            $i++;
-                        }
-                    }  
-                }
-            }
-			$content = $content;
 		endif;
 	endif;
 
@@ -286,8 +270,14 @@ add_action( 'init', 'fourteenxt_remove_pre_get_posts', 31 );
  * @param array $classes A list of existing body class values.
  * @return array The filtered body class list.
  */
- 
-if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
+
+$full_content_home = get_theme_mod( 'fourteenxt_body_class_filters' ) != 0;
+$full_content_search = get_theme_mod( 'fourteenxt_full_content_search' ) != 0;
+$full_content_archive = get_theme_mod( 'fourteenxt_full_content_archive' ) != 0;
+$full_content_category = get_theme_mod( 'fourteenxt_full_content_category' ) != 0;
+
+if ( $full_content_home || $full_content_search 
+     || $full_content_archive || $full_content_category) {
 	function fourteenxt_remove_body_classes() {
 	    remove_filter( 'body_class', 'twentyfourteen_body_classes' );
     }
@@ -303,8 +293,13 @@ if ( get_theme_mod( 'fourteenxt_body_class_filters' ) != 0 ) {
 	} else {
 		$classes[] = 'masthead-fixed';
 	}
-
-	if ( is_archive() || is_search() ) {
+	
+	global $full_content_archive, $full_content_search, $full_content_category, $full_content_home;
+	if ( (is_archive() && !$full_content_archive && !is_category()) 
+	    || (is_search() && !$full_content_search)
+		|| (is_category() && !$full_content_category)
+		|| (is_home() && !$full_content_home)
+	   ) {
 		$classes[] = 'list-view';
 	}
 
@@ -387,4 +382,4 @@ require FOURTEEN_EXTENDED_PLUGIN_DIR . 'functions/custom.php';
 
 if ( ! class_exists( 'Featured_Content' ) && 'plugins.php' !== $GLOBALS['pagenow'] ) {
 	require FOURTEEN_EXTENDED_PLUGIN_DIR . 'inc/featured-content.php';
-}
+} 
